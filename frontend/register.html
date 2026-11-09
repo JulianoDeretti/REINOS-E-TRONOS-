@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Criar conta — Kings or Thrones</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👑</text></svg>">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/auth.css">
+<link rel="stylesheet" href="css/medieval.css">
+</head>
+<body data-scene="castle">
+<div class="screen">
+  <div class="crest-eyebrow"><span class="rule"></span>KINGS OR THRONES<span class="rule flip"></span></div>
+  <h1 class="brand-title auth-title">Inicie sua linhagem</h1>
+  <p class="brand-sub">Todo grande reino começa com um único nome.</p>
+
+  <div class="parchment-panel auth-panel">
+    <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+    <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+
+    <div id="alert" class="alert alert-error"></div>
+
+    <form id="registerForm" novalidate>
+      <div class="field">
+        <label for="username">Nome de usuário</label>
+        <input type="text" id="username" name="username" placeholder="ArthurDeAethel" autocomplete="username" minlength="3" maxlength="24" pattern="[A-Za-z0-9_.\-]{3,24}" required>
+        <div class="hint">3 a 24 caracteres: letras, números, ponto, hífen ou sublinhado. Será seu identificador único.</div>
+      </div>
+      <div class="field">
+        <label for="email">E-mail</label>
+        <input type="email" id="email" name="email" placeholder="arthur@reino.com" autocomplete="email" required>
+      </div>
+      <div class="field">
+        <label for="password">Senha</label>
+        <input type="password" id="password" name="password" placeholder="••••••••" autocomplete="new-password" minlength="8" maxlength="128" required>
+        <div class="hint" id="pwHint">Mínimo de 8 caracteres, com pelo menos uma letra e um número.</div>
+      </div>
+      <div class="field">
+        <label for="confirmPassword">Confirmar senha</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="••••••••" autocomplete="new-password" minlength="8" maxlength="128" required>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block" id="submitBtn">
+        <span id="submitLabel">Criar minha conta</span>
+      </button>
+    </form>
+
+    <p class="link-line">Já possui uma conta? <a href="login.html">Entrar</a></p>
+  </div>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/auth-ui.js"></script>
+<script src="js/fx.js"></script>
+</body>
+</html>

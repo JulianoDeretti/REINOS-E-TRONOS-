@@ -1,0 +1,353 @@
+/* ============================================================
+   KINGS OR THRONES — Design System
+   Medieval / fantasia / estrategia. Pergaminho, madeira, pedra e ouro.
+   ============================================================ */
+
+
+:root {
+  /* --- paleta base --- */
+  --ink:            #2b1d0f;
+  --ink-soft:       #4a3a24;
+  --parchment:      #ecdfb8;
+  --parchment-lo:   #ddc99a;
+  --parchment-hi:   #f6ecd3;
+  --wood-darkest:   #241309;
+  --wood-dark:      #4a2c17;
+  --wood:           #74491f;
+  --wood-light:     #a87a41;
+  --bronze:         #c1863f;
+  --bronze-bright:  #dba85e;
+  --stone:          #837c6c;
+  --stone-dark:     #4b463b;
+  --gold:           #d4a827;
+  --gold-bright:    #f4d16e;
+  --gold-dim:       #9c7a1f;
+  --crimson:        #9c2a38;
+  --crimson-bright: #c23b4c;
+  --forest:         #4c7a4c;
+  --ocean:          #2f5c73;
+
+  --shadow-soft:    rgba(15, 9, 2, 0.35);
+  --shadow-hard:    rgba(10, 6, 2, 0.6);
+
+  --font-display: 'Cinzel', 'Trajan Pro', serif;
+  --font-body: 'EB Garamond', Georgia, serif;
+
+  --radius: 6px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--ink);
+  background:
+    radial-gradient(ellipse at top, #3a2c1c 0%, #1c130a 55%, #100a05 100%);
+  background-attachment: fixed;
+  font-size: 18px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* faixa de textura sutil no fundo, simulando pedra/pergaminho antigo sem imagens externas */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.5;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(255,255,255,.015) 0px, rgba(255,255,255,.015) 1px, transparent 1px, transparent 3px),
+    repeating-linear-gradient(90deg, rgba(0,0,0,.03) 0px, rgba(0,0,0,.03) 1px, transparent 1px, transparent 3px);
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  color: var(--ink);
+  margin: 0 0 0.5em 0;
+  letter-spacing: 0.02em;
+  font-weight: 700;
+}
+
+a { color: inherit; }
+
+p { margin: 0 0 1em 0; }
+
+button, input, select, textarea { font-family: inherit; font-size: inherit; }
+
+/* ------------------------------------------------------------
+   Layout helpers
+   ------------------------------------------------------------ */
+.screen {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+}
+
+.crest-eyebrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: var(--gold-bright);
+  font-family: var(--font-display);
+  font-size: 13px;
+  letter-spacing: 0.35em;
+  margin-bottom: 6px;
+}
+.crest-eyebrow .rule {
+  width: 34px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-dim));
+}
+.crest-eyebrow .rule.flip { background: linear-gradient(90deg, var(--gold-dim), transparent); }
+
+.brand-title {
+  text-align: center;
+  font-size: 44px;
+  color: var(--gold-bright);
+  text-shadow: 0 2px 0 #000, 0 0 22px rgba(233, 199, 95, 0.25);
+  margin-bottom: 4px;
+}
+.brand-sub {
+  text-align: center;
+  color: var(--parchment-lo);
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: 16px;
+  margin-bottom: 28px;
+  opacity: 0.85;
+}
+
+/* ------------------------------------------------------------
+   Painel de pergaminho — o principal "cartao" da UI
+   ------------------------------------------------------------ */
+.parchment-panel {
+  position: relative;
+  background:
+    linear-gradient(180deg, var(--parchment-hi), var(--parchment) 55%, var(--parchment-lo));
+  border-radius: var(--radius);
+  padding: 30px 34px;
+  box-shadow:
+    0 16px 40px var(--shadow-hard),
+    inset 0 0 0 1px rgba(90, 58, 34, 0.35);
+  border: 10px solid transparent;
+  border-image: linear-gradient(160deg, var(--wood-light), var(--wood-dark) 40%, var(--wood) 70%, var(--wood-darkest)) 1;
+}
+.parchment-panel::before {
+  /* moldura interna dourada, como um brasao entalhado */
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border-radius: 3px;
+  pointer-events: none;
+  box-shadow: inset 0 0 0 1px rgba(201, 162, 39, 0.55);
+}
+.panel-corner {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--gold);
+  opacity: 0.85;
+}
+.panel-corner.tl { top: -3px; left: -3px; border-right: none; border-bottom: none; }
+.panel-corner.tr { top: -3px; right: -3px; border-left: none; border-bottom: none; }
+.panel-corner.bl { bottom: -3px; left: -3px; border-right: none; border-top: none; }
+.panel-corner.br { bottom: -3px; right: -3px; border-left: none; border-top: none; }
+
+/* ------------------------------------------------------------
+   Formularios
+   ------------------------------------------------------------ */
+.field { margin-bottom: 18px; }
+.field label {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 12.5px;
+  letter-spacing: 0.12em;
+  color: var(--wood-dark);
+  margin-bottom: 6px;
+}
+.field .hint {
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: 14px;
+  color: var(--ink-soft);
+  opacity: 0.75;
+  margin-top: 4px;
+}
+.field input[type="text"],
+.field input[type="email"],
+.field input[type="password"],
+.field select {
+  width: 100%;
+  padding: 11px 13px;
+  background: rgba(255, 252, 240, 0.6);
+  border: 1px solid var(--wood-light);
+  border-radius: 3px;
+  color: var(--ink);
+  outline: none;
+  transition: box-shadow .15s ease, border-color .15s ease;
+}
+.field input:focus, .field select:focus {
+  border-color: var(--gold-dim);
+  box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.25);
+}
+.field input::placeholder { color: #8a7a5c; }
+
+/* ------------------------------------------------------------
+   Botoes
+   ------------------------------------------------------------ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  padding: 13px 26px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  transition: transform .12s ease, box-shadow .12s ease, filter .12s ease, background .12s ease;
+  text-decoration: none;
+}
+.btn:active:not(:disabled) { transform: translateY(1px); filter: brightness(0.96); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; filter: grayscale(0.3); }
+.btn:focus-visible { outline: 2px solid var(--gold-bright); outline-offset: 2px; }
+
+.btn-primary {
+  color: #2a1806;
+  background: linear-gradient(180deg, var(--gold-bright), var(--gold) 65%, var(--gold-dim));
+  box-shadow: 0 6px 14px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.55);
+  font-weight: 600;
+}
+.btn-primary:hover:not(:disabled) { filter: brightness(1.08); box-shadow: 0 8px 20px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.55); transform: translateY(-1px); }
+
+.btn-secondary {
+  color: #2e1c08;
+  background: linear-gradient(180deg, var(--bronze-bright), var(--bronze) 60%, var(--wood-light));
+  box-shadow: 0 6px 14px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.35);
+  font-weight: 600;
+}
+.btn-secondary:hover:not(:disabled) { filter: brightness(1.1); transform: translateY(-1px); }
+
+.btn-ghost {
+  color: var(--wood-dark);
+  background: rgba(255,252,240,.35);
+  border: 1.5px solid var(--wood-light);
+  font-weight: 600;
+}
+.btn-ghost:hover:not(:disabled) { background: rgba(201,134,63,.18); border-color: var(--bronze); }
+
+.btn-block { width: 100%; }
+.btn-row { display: flex; gap: 12px; }
+.btn-row .btn { flex: 1; }
+
+/* ------------------------------------------------------------
+   Mensagens
+   ------------------------------------------------------------ */
+.alert {
+  padding: 11px 14px;
+  border-radius: 4px;
+  font-size: 15px;
+  margin-bottom: 16px;
+  display: none;
+}
+.alert.show { display: block; }
+.alert-error {
+  background: rgba(122, 31, 43, 0.12);
+  border: 1px solid var(--crimson);
+  color: var(--crimson);
+}
+.alert-success {
+  background: rgba(63, 91, 63, 0.14);
+  border: 1px solid var(--forest);
+  color: var(--forest);
+}
+
+.link-line {
+  text-align: center;
+  margin-top: 18px;
+  font-size: 15px;
+  color: var(--ink-soft);
+}
+.link-line a { color: var(--crimson); font-weight: 600; text-decoration: none; border-bottom: 1px dotted var(--crimson); }
+.link-line a:hover { color: var(--crimson-bright); }
+
+/* ------------------------------------------------------------
+   Loading
+   ------------------------------------------------------------ */
+.spinner {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  border: 2px solid rgba(0,0,0,.2);
+  border-top-color: currentColor;
+  animation: spin .7s linear infinite;
+  display: inline-block;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.loading-overlay {
+  position: fixed; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(16, 10, 5, 0.75);
+  z-index: 100;
+  color: var(--gold-bright);
+  font-family: var(--font-display);
+  letter-spacing: 0.1em;
+  flex-direction: column;
+  gap: 14px;
+}
+.loading-overlay .spinner { width: 30px; height: 30px; border-width: 3px; }
+.hidden { display: none !important; }
+
+/* ------------------------------------------------------------
+   Scrollbar tematica
+   ------------------------------------------------------------ */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--wood-darkest); }
+::-webkit-scrollbar-thumb { background: var(--wood-light); border-radius: 6px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gold-dim); }
+
+@media (max-width: 560px) {
+  body { font-size: 16px; }
+  .brand-title { font-size: 32px; }
+  .parchment-panel { padding: 22px 18px; }
+}
+
+/* ---------- mapa: tamanho de celula controlado por --cell (mapview.js) ---------- */
+.territory-grid.mapview-grid { --cell: 32px; display: grid; grid-auto-rows: var(--cell); gap: 1px; width: max-content; }
+.mapview-grid .territory-cell { font-size: calc(var(--cell) * 0.55); border-radius: 2px; }
+.mapview-grid.tiny .territory-cell { font-size: 0; }
+.mapview-scroll { cursor: grab; user-select: none; -webkit-user-select: none; }
+.mapview-scroll:active { cursor: grabbing; }
+.map-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 8px 0; }
+.map-toolbar button {
+  padding: 6px 12px; border-radius: 4px; border: 1px solid var(--gold-dim);
+  background: linear-gradient(180deg, var(--bronze-bright), var(--bronze)); color: #2e1c08;
+  font-family: var(--font-display); font-size: 12px; cursor: pointer; font-weight: 600;
+}
+.map-toolbar button:hover { filter: brightness(1.1); }
+.map-toolbar .zoom-label { min-width: 48px; text-align: center; font-family: var(--font-display); font-size: 12px; color: var(--wood-dark); }
+.map-toolbar .map-tip { font-size: 12px; font-style: italic; color: var(--ink-soft); margin-left: 8px; }
+
+/* assistente: na etapa do mapa, a pagina inteira e do mapa */
+.wizard-wrap.map-mode { max-width: none !important; padding: 12px 18px 40px; }
+.wizard-wrap.map-mode .wizard-panel, .wizard-wrap.map-mode .wizard-nav { max-width: none !important; }
+.wizard-wrap.map-mode .map-scroll { max-height: calc(100vh - 340px); min-height: 380px; }
+.wizard-wrap.map-mode .wizard-header { margin-bottom: 10px; }
+.wizard-wrap.map-mode .wizard-title { font-size: 22px; }
+.wizard-wrap.map-mode .steps-track { margin-top: 10px; }

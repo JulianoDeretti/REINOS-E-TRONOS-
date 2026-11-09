@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Meu Reino — Kings or Thrones</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👑</text></svg>">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/kingdom.css">
+  <link rel="stylesheet" href="css/ux.css" />
+  <link rel="stylesheet" href="css/medieval.css" />
+  <link rel="stylesheet" href="css/minigames.css" />
+  <link rel="stylesheet" href="css/vivo.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+  <link rel="stylesheet" href="css/cenarios.css" />
+  <link rel="stylesheet" href="css/pilares.css" />
+  <link rel="stylesheet" href="css/cidade-janela.css" />
+</head>
+<body class="dashboard-body">
+
+<div id="loading" class="loading-overlay">
+  <span class="spinner"></span>
+  <span>Consultando os arquivos do reino…</span>
+</div>
+
+<div class="dash hidden" id="dash">
+
+  <!-- TOPO: recursos -->
+  <header class="dash-topbar">
+    <div class="dash-brand">👑 <span>Kings or Thrones</span></div>
+    <div class="resource-strip-wrap">
+      <button class="res-scroll-btn" id="resScrollLeft" type="button" title="Rolar para a esquerda">‹</button>
+      <div class="resource-strip" id="resourceStrip"></div>
+      <button class="res-scroll-btn" id="resScrollRight" type="button" title="Rolar para a direita">›</button>
+    </div>
+    <div class="builders-chip" id="buildersChip" title="Construtores disponíveis / capacidade total">🔨 0/0</div><button type="button" class="info-btn" data-info="builders" title="O que é isso?">ⓘ</button>
+
+    <div class="time-control">
+      <div class="time-display" id="timeDisplay">
+        <span id="timeSeasonIcon">🌱</span>
+        <span id="timeText">Dia 1 · Primavera · Ano 1</span>
+      </div>
+      <div class="day-stepper">
+        <button class="day-step-btn" id="dayMinusBtn" type="button">−</button>
+        <input type="number" id="daysInput" value="1" min="1" max="30" inputmode="numeric">
+        <button class="day-step-btn" id="dayPlusBtn" type="button">+</button>
+      </div>
+      <button class="btn btn-primary btn-sm" id="advanceBtn">Avançar</button>
+      <button class="btn btn-secondary btn-sm" id="advance7Btn">+7 Dias</button>
+      <button class="btn btn-secondary btn-sm" id="advance30Btn">+30 Dias</button>
+      <button class="btn btn-secondary btn-sm" id="advanceUntilBtn" title="Avança dia a dia e PARA quando algo acontecer: nova decisão, alerta, obra ou pesquisa concluída (até 30 dias)">⏭️ Até algo</button>
+    </div>
+
+    <div class="notif-wrap">
+      <button class="notif-bell" id="notifBell">🔔<span class="notif-badge hidden" id="notifBadge">0</span></button>
+      <div class="notif-dropdown hidden" id="notifDropdown">
+        <div class="notif-dropdown-head">
+          <strong>Notificações</strong>
+          <button class="btn-link" id="markReadBtn">marcar todas como lidas</button>
+        </div>
+        <div id="notifList" class="notif-list"></div>
+      </div>
+    </div>
+
+    <button class="btn btn-ghost dash-logout" id="logoutBtn">Sair</button>
+  </header>
+
+  <div id="tickToast" class="tick-toast hidden"></div>
+
+  <div class="dash-body">
+    <!-- LATERAL: navegacao -->
+    <nav class="dash-nav">
+      <button class="nav-item" data-panel="hoje"><span>📋</span>Hoje <span class="nav-count hidden" id="navHojeCount">0</span></button>
+      <button class="nav-item active" data-panel="painel"><span>🏰</span>Meu Reino</button>
+      <button class="nav-item" data-panel="campanha"><span>🏆</span>Campanha</button>
+      <button class="nav-item" data-panel="governo"><span>🏛️</span>Governo</button>
+      <button class="nav-item" data-panel="mundo"><span>🌐</span>Mundo</button>
+      <button class="nav-item" data-panel="festas"><span>🎪</span>Festas</button>
+      <button class="nav-item" data-panel="construcoes"><span>🏗️</span>Construções</button>
+      <button class="nav-item" data-panel="populacao"><span>👥</span>População</button>
+      <button class="nav-item" data-panel="exercito"><span>⚔️</span>Exército</button>
+      <button class="nav-item" data-panel="cidades"><span>🏘️</span>Cidades</button>
+      <button class="nav-item" data-panel="politica"><span>🏛️</span>Política</button>
+      <button class="nav-item" data-panel="tecnologia"><span>🔬</span>Tecnologia</button>
+      <button class="nav-item" data-panel="exploracao"><span>🧭</span>Exploração</button>
+      <button class="nav-item" data-panel="comerciointl"><span>🌍</span>Comércio Internacional</button>
+      <button class="nav-item" data-panel="diplomacia"><span>🕊️</span>Diplomacia</button>
+      <button class="nav-item" data-panel="guerra"><span>⚔️</span>Guerra</button>
+      <button class="nav-item" data-panel="cultura"><span>🎭</span>Religião e Cultura</button>
+      <button class="nav-item" data-panel="seguranca"><span>👮</span>Segurança e Justiça</button>
+      <button class="nav-item" data-panel="magia"><span>🔮</span>Magia e Arcano</button>
+      <button class="nav-item" data-panel="dinastia"><span>👑</span>Dinastia e Famílias</button>
+      <button class="nav-item" data-panel="religiao"><span>⛪</span>Fé e Religiões</button>
+      <button class="nav-item" data-panel="infra"><span>🛣️</span>Infraestrutura</button>
+      <button class="nav-item" data-panel="economia"><span>💰</span>Economia</button>
+      <button class="nav-item" data-panel="mapa"><span>🌍</span>Mapa</button>
+      <button class="nav-item" data-panel="eventos"><span>📯</span>Eventos<span class="nav-badge hidden" id="eventsBadge">0</span></button>
+      <button class="nav-item" data-panel="objetivos"><span>🎯</span>Objetivos</button>
+      <button class="nav-item" data-panel="personagens"><span>👥</span>Personagens</button>
+      <button class="nav-item" data-panel="historico"><span>📜</span>História</button>
+      <button class="nav-item" data-panel="config"><span>⚙️</span>Configurações</button>
+    </nav>
+
+    <main class="dash-main">
+
+      <!-- PAINEL PRINCIPAL -->
+      <section class="dash-panel active" data-panel="painel">
+        <div class="kingdom-header-card parchment-panel">
+          <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+          <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+          <div class="kh-banner">
+            <div class="kh-cloth" id="khCloth"><span id="khSymbol">👑</span></div>
+          </div>
+          <div class="kh-info">
+            <h1 id="khName">—</h1>
+            <p class="kh-sub" id="khSub">—</p>
+            <div class="kh-tags" id="khTags"></div>
+            <div class="kh-traits" id="khTraits"></div>
+          </div>
+        </div>
+
+        <div class="overview-grid">
+          <div class="parchment-panel overview-card">
+            <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+            <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+            <h3>📊 Visão Geral</h3>
+            <dl class="kv-list" id="overviewList"></dl>
+          </div>
+
+          <div class="parchment-panel overview-card">
+            <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+            <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+            <h3>💗 Bem-estar do Reino</h3>
+            <div id="wellbeingMini"></div>
+          </div>
+        </div>
+
+        <div class="parchment-panel">
+          <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+          <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+          <h3>🏘️ Sua Capital</h3>
+          <div class="capital-grid" id="capitalGrid"></div>
+          <p class="hint" id="capitalCaption">Construa para ver sua capital crescer.</p>
+        </div>
+
+        <div class="parchment-panel">
+          <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+          <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+          <h3>🗺️ Seu Território</h3>
+          <div class="mini-map-wrap">
+            <div class="territory-grid mini" id="miniMapGrid"></div>
+          </div>
+          <p class="hint" id="miniMapCaption"></p>
+        </div>
+      </section>
+
+      <!-- CONSTRUCOES -->
+      <section class="dash-panel" data-panel="construcoes">
+        <div class="parchment-panel">
+          <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+          <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+          <h3>🏗️ Construções em Andamento <span class="obj-count" id="queueCount"></span> <button type="button" class="info-btn" data-info="queue">ⓘ</button></h3>
+          <div id="queueList" class="queue-list"><p class="hint">Nenhuma construção em andamento.</p></div>
+        </div>
+
+        <div class="parchment-panel">
+          <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+          <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+          <h3>🏛️ Suas Construções</h3>
+          <input type="text" class="search-input" id="myBuildingsSearch" placeholder="🔎 Pesquisar construção...">
+          <div class="category-filter" id="myBuildingsFilter"></div>
+          <div class="tech-controls" id="bulkUpgradeBar" style="margin-bottom:10px;">
+            <button class="category-chip" data-bulksel="all">☐ Selecionar Todas</button>
+            <button class="category-chip" data-bulksel="none">Desmarcar Todas</button>
+            <button class="category-chip" data-bulksel="available">Disponíveis p/ Evoluir</button>
+            <button class="category-chip" data-bulksel="affordable">Com Recursos Suficientes</button>
+            <button class="category-chip" data-bulksel="category">Desta Categoria</button>
+            <button class="btn btn-primary" id="bulkUpgradeBtn" style="margin-left:auto;">⬆️ Evoluir Selecionadas (<span id="bulkUpgradeCount">0</span>)</button>
+          </div>
+          <div id="bulkUpgradeQuote" class="hint" style="margin-bottom:8px;"></div>
+          <div id="myBuildingsList" class="buildings-grid"></div>
+        </div>
+
+        <div class="parchment-panel">
+          <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+          <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+          <h3>📖 Catálogo de Construções</h3>
+          <input type="text" class="search-input" id="catalogSearch" placeholder="🔎 Pesquisar construção...">
+          <div class="category-filter" id="catalogFilter"></div>
+          <div id="catalogList" class="buildings-grid"></div>
+        </div>
+      </section>
+
+      <!-- EXÉRCITO -->
+      <section class="dash-panel" data-panel="exercito">
+        <div class="parchment-panel">
+          <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+          <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+          <h3>⚔️ Seu Exército</h3>
+          <div id="armySummary" class="economy-summary"></div>
+          <div id="armyRoster" class="jobs-list" style="margin-top:14px;"></div>
+        </div>
+        <div class="parchment-panel">
+          <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+          <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+          <h3>🎖️ Recrutar Unidades</h3>
+          <div class="category-filter" id="militaryFilter"></div>
+          <div id="militaryCatalog" class="buildings-grid"></div>
+        </div>
+      </section>
+
+      <!-- CIDADES -->
+      <section class="dash-panel" data-panel="cidades">
+        <div class="parchment-panel">
+          <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+          <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+            <h3 style="margin-bottom:0;">🏘️ Seus Assentamentos <button type="button" class="info-btn" data-info="city_pop">ⓘ</button></h3>
+            <button class="btn btn-primary btn-sm" id="foundSettlementBtn">+ Fundar Novo Assentamento</button>
+          </div>
+          <div id="settlementsList" class="characters-grid" style="margin-top:14px;"></div>
+        </div>
+      </section>
+
+      <!-- MODAL: GERENCIAR CIDADE -->
+      <div class="modal-overlay hidden" id="manageSettlementOverlay">
+        <div class="modal-panel parchment-panel" style="max-width:720px;">
+          <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+          <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+          <button class="modal-close" id="manageSettlementClose">✕</button>
+          <div id="manageSettlementBody"><p class="hint">Carregando cidade...</p></div>
+        </div>
+      </div>
+
+      <!-- MODAL: FUNDAR ASSENTAMENTO -->
+      <div class="modal-overlay hidden" id="settlementModalOverlay">
+        <div class="modal-panel parchment-panel" style="max-width:480px;">
+          <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+          <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+          <button class="modal-close" id="settlementModalClose">✕</button>
+          <h3>🏘️ Fundar Novo Assentamento</h3>
+          <div id="settlementModalAlert" class="alert alert-error"></div>
+          <div class="field">
+            <label for="settlementName">Nome do Assentamento</label>
+            <input type="text" id="settlementName" placeholder="Vila Nova" maxlength="30">
+          </div>
+          <div class="field">
+            <label for="settlementTerritory">Local (seu, ou um vizinho livre que será reivindicado)</label>
+            <select id="settlementTerritory"></select>
+          </div>
+          <div class="field">
+            <label for="settlementType">Tipo de Assentamento</label>
+            <select id="settlementType"></select>
+          </div>
+          <div id="settlementPreview" class="cd-preview" aria-live="polite"></div>
+          <div id="settlementCostPreview" class="hint" style="margin-bottom:14px;"></div>
+          <button class="btn btn-primary btn-block" id="settlementConfirmBtn">Fundar Assentamento</button>
+        </div>
+      </div>
+
+      <!-- INFRAESTRUTURA -->
+      <section class="dash-panel" data-panel="hoje">
+        <div class="parchment-panel">
+          <span class="panel-corner tl"></span><span class="panel-corner tr"></span><span class="panel-corner bl"></span><span class="panel-corner br"></span>
+          <h3>📋 Hoje: o que exige a sua atenção</h3>
+          <div id="hojeBody"><p class="hint">Reunindo as decisões do dia…</p></div>
+        </div>
+      </section>
+
+      <section class="dash-panel" data-panel="festas">
+        <div class="parchment-panel">
+          <span class="panel-corner tl"></span><span class="panel-corner tr"></span><span class="panel-corner bl"></span><span class="panel-corner br"></span>
+          <h3>🎪 Festas e Minijogos: tradições do reino</h3>
+          <div id="festasBody"><p class="hint">Abrindo o calendário…</p></div>
+        </div>
+      </section>
+
+      <section class="dash-panel" data-panel="mundo">
+        <div class="parchment-panel">
+          <span class="panel-corner tl"></span><span class="panel-corner tr"></span><span class="panel-corner bl"></span><span class="panel-corner br"></span>
+          <h3>🌐 Mundo: cadeias, mercado, reinos e a sua capital</h3>
+          <div id="mundoBody"><p class="hint">Consultando o mundo…</p></div>
+        </div>
+      </section>
+
+      <section class="dash-panel" data-panel="governo">
+        <div class="parchment-panel">
+          <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+          <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+          <h3>🏛️ Governo: Poder, Instituições e Decretos <button type="button" class="info-btn" data-info="gov_main">ⓘ</button></h3>
+          <div id="govBody"><p class="hint">Consultando as instituições do reino…</p></div>
+        </div>
+      </section>
+
+      <section class="dash-panel" data-panel="campanha">
+        <div class="parchment-panel">
+          <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+          <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+          <h3>🏆 Campanha: Eras, Crises e Destino <button type="button" class="info-btn" data-info="campanha_main">ⓘ</button></h3>
+          <div id="campBody"><p class="hint">Consultando os cronistas do reino…</p></div>
+        </div>
+      </section>
+
+      <section class="dash-panel" data-panel="infra">
+        <div class="parchment-panel">
+          <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+          <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+          <h3>🛣️ Infraestrutura e Transporte <button type="button" class="info-btn" data-info="infra_main">ⓘ</button></h3>
+          <div class="category-filter" id="ifTabs"></div>
+          <div id="ifBody"><p class="hint">Consultando os engenheiros…</p></div>
+        </div>
+      </section>
+
+      <!-- FE E RELIGIOES -->
+      <section class="dash-panel" data-panel="religiao">
+        <div class="parchment-panel">
+          <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+          <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+          <h3>⛪ Fé e Religiões <button type="button" class="info-btn" data-info="religion_main">ⓘ</button></h3>
+          <div class="category-filter" id="rlTabs"></div>
+          <div id="rlBody"><p class="hint">Consultando os templos…</p></div>
+        </div>
+      </section>
+
+      <!-- DINASTIA -->
+      <section class="dash-panel" data-panel="dinastia">
+        <div class="parchment-panel">
+          <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+          <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+          <h3>👑 Dinastia e Famílias <button type="button" class="info-btn" data-info="dynasty">ⓘ</button></h3>
+          <div class="category-filter" id="dyTabs"></div>
+          <div id="dyBody"><p class="hint">Consultando os arquivos da corte…</p></div>
+        </div>
+      </section>
+
+      <!-- MAGIA -->
+      <section class="dash-panel" data-panel="magia">
+        <div class="parchment-panel">
+          <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+          <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+          <h3>🔮 Magia e Arcano <button type="button" class="info-btn" data-info="magic">ⓘ</button></h3>
+          <div class="category-filter" id="mgTabs"></div>
+          <div id="mgBody"><p class="hint">Consultando os arcanos…</p></div>
+        </div>
+      </section>
+
+      <!-- SEGURANCA E JUSTICA -->
+      <section class="dash-panel" data-panel="seguranca">
+        <div class="parchment-panel">
+          <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+          <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+          <h3>👮 Segurança e Justiça <button type="button" class="info-btn" data-info="security">ⓘ</button></h3>
+          <div class="category-filter" id="scTabs"></div>
+          <div id="scBody"><p class="hint">Consultando a guarda…</p></div>
+        </div>
+      </section>
+
+      <!-- RELIGIAO E CULTURA -->
+      <section class="dash-panel" data-panel="cultura">
+        <div class="parchment-panel">
+          <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+          <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+          <h3>🎭 Religião e Cultura <button type="button" class="info-btn" data-info="culture">ⓘ</button></h3>
+          <div class="category-filter" id="cuTabs"></div>
+          <div id="cuBody"><p class="hint">Consultando sacerdotes e artistas…</p></div>
+        </div>
+      </section>
+
+      <!-- GUERRA -->
+      <section class="dash-panel" data-panel="guerra">
+        <div class="parchment-panel">
+          <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+          <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+          <h3>⚔️ Guerra e Exércitos <button type="button" class="info-btn" data-info="war">ⓘ</button></h3>
+          <div class="category-filter" id="wrTabs"></div>
+          <div id="wrBody"><p class="hint">Reunindo os comandantes…</p></div>
+        </div>
+      </section>
+
+      <!-- DIPLOMACIA -->
+      <section class="dash-panel" data-panel="diplomacia">
+        <div class="parchment-panel">
+          <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+          <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+          <h3>🕊️ Diplomacia e Relações Internacionais <button type="button" class="info-btn" data-info="diplomacy">ⓘ</button></h3>
+          <div class="category-filter" id="dpTabs"></div>
+          <div id="dpBody"><p class="hint">Consultando os embaixadores…</p></div>
+        </div>
+      </section>
+
+      <!-- COMERCIO INTERNACIONAL -->
+      <section class="dash-panel" data-panel="comerciointl">
+        <div class="parchment-panel">
+          <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+          <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+          <h3>🌍 Comércio Internacional <button type="button" class="info-btn" data-info="trade_intl">ⓘ</button></h3>
+          <div class="category-filter" id="tiTabs"></div>
+          <div id="tiBody"><p class="hint">Consultando os mercadores…</p></div>
+        </div>
+      </section>
+
+      <!-- EXPLORACAO -->
+      <section class="dash-panel" data-panel="exploracao">
+        <div class="parchment-panel">
+          <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+          <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+          <h3>🧭 Exploração e Descobertas <button type="button" class="info-btn" data-info="exploration">ⓘ</button></h3>
+          <div class="category-filter" id="expTabs"></div>
+          <div id="expBody"><p class="hint">Consultando os exploradores…</p></div>
+        </div>
+      </section>
+
+      <!-- MODAL: NOVA EXPEDICAO -->
+      <div class="modal-overlay hidden" id="expedModalOverlay">
+        <div class="modal-panel parchment-panel" style="max-width:600px;">
+          <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+          <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+          <button class="modal-close" id="expedModalClose">✕</button>
+          <div id="expedModalBody"></div>
+        </div>
+      </div>
+
+      <!-- TECNOLOGIA -->
+      <section class="dash-panel" data-panel="tecnologia">
+        <div class="parchment-panel">
+          <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+          <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+          <h3>🔬 Tecnologia e Conhecimento <button type="button" class="info-btn" data-info="technology">ⓘ</button></h3>
+          <div class="category-filter" id="techTabs"></div>
+          <div id="techBody"><p class="hint">Consultando a academia…</p></div>
+        </div>
+      </section>
+
+      <!-- POLITICA -->
+      <section class="dash-panel" data-panel="politica">
+        <div class="parchment-panel">
+          <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+          <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+          <h3>🏛️ Política do Reino <button type="button" class="info-btn" data-info="politics">ⓘ</button></h3>
+          <div class="category-filter" id="polTabs"></div>
+          <div id="politicsBody"><p class="hint">Consultando o conselho…</p></div>
+        </div>
+      </section>
+
+      <!-- ECONOMIA -->
+      <section class="dash-panel" data-panel="economia">
+        <div class="parchment-panel">
+          <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+          <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+          <h3>💰 Tesouro Real</h3>
+          <div class="economy-summary" id="economySummary"></div>
+        </div>
+
+        <div class="parchment-panel">
+          <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+          <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+          <h3>📦 Armazenamento <button type="button" class="info-btn" data-info="storage">ⓘ</button></h3>
+          <div id="storagePanel" class="bc-stats"></div>
+        </div>
+
+        <div class="parchment-panel">
+          <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+          <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+          <h3>🏛️ Impostos <button type="button" class="info-btn" data-info="taxes">ⓘ</button></h3>
+          <p class="step-intro" style="margin-bottom:14px;">Impostos podem ir de 0% a 100% — quanto mais altos, maior a receita, mas maior o descontentamento.</p>
+          <div class="tax-control">
+            <input type="range" id="taxSlider" min="0" max="100" step="1" value="10">
+            <span class="tax-value" id="taxValue">10%</span>
+          </div>
+          <button class="btn btn-primary" id="saveTaxBtn" style="margin-top:14px;">Definir imposto</button>
+          <div id="taxAlert" class="alert alert-success" style="margin-top:14px;"></div>
+        </div>
+
+        <div class="parchment-panel">
+          <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+          <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+          <h3>🏪 Mercado <button type="button" class="info-btn" data-info="market">ⓘ</button></h3>
+          <p class="step-intro" style="margin-bottom:14px;">Preços variam conforme seu estoque — recursos escassos custam mais, excedentes valem menos.</p>
+          <div id="marketList" class="market-grid"></div>
+        </div>
+
+        <div class="parchment-panel">
+          <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+          <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+          <h3>📈 Histórico Financeiro</h3>
+          <div id="economyLog" class="economy-log"></div>
+        </div>
+      </section>
+
+      <!-- MODAL: INFORMACOES (ⓘ) -->
+      <div class="modal-overlay hidden" id="infoModalOverlay" style="z-index:120;">
+        <div class="modal-panel parchment-panel" style="max-width:480px;">
+          <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+          <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+          <button class="modal-close" id="infoModalClose">✕</button>
+          <div id="infoModalBody"></div>
+        </div>
+      </div>
+
+      <!-- MODAL: DETALHE DE RECURSO -->
+      <div class="modal-overlay hidden" id="resourceModalOverlay">
+        <div class="modal-panel parchment-panel" style="max-width:520px;">
+          <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+          <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+          <button class="modal-close" id="resourceModalClose">✕</button>
+          <div id="resourceModalBody"><p class="hint">Carregando...</p></div>
+        </div>
+      </div>
+
+      <!-- EVENTOS -->
+      <section class="dash-panel" data-panel="eventos">
+        <div class="parchment-panel">
+          <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+          <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+          <h3>📯 Decisões Pendentes</h3>
+          <p class="hint" id="eventsCodex" title="Situações únicas do catálogo que o seu reino já viveu"></p>
+          <div id="pendingEvents"><p class="hint">Nenhum evento pendente no momento.</p></div>
+        </div>
+        <div class="parchment-panel">
+          <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+          <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+          <h3>📜 Eventos Recentes</h3>
+          <div id="resolvedEvents"></div>
+        </div>
+      </section>
+
+      <!-- OBJETIVOS -->
+      <section class="dash-panel" data-panel="objetivos">
+        <div class="parchment-panel">
+          <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+          <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+            <h3 style="margin-bottom:0;">🎯 Objetivos do Reino <span class="obj-count" id="objCount"></span> <button type="button" class="info-btn" data-info="objectives">ⓘ</button></h3>
+            <button class="btn btn-primary btn-sm" id="claimAllObjectivesBtn">💰 Receber Todas as Recompensas</button>
+          </div>
+          <p class="step-intro" style="margin-bottom:12px;">Centenas de objetivos aguardam — escolha uma categoria para ver o progresso.</p>
+          <div class="category-filter" id="objectivesFilter"></div>
+          <p class="hint" id="objectivesSummary" style="margin-bottom:10px;"></p>
+          <div id="objectivesList" class="objectives-grid"></div>
+        </div>
+      </section>
+
+      <!-- PERSONAGENS -->
+      <section class="dash-panel" data-panel="personagens">
+        <div class="parchment-panel">
+          <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+          <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+          <h3>👥 Personagens do Reino <span class="obj-count" id="charCount"></span></h3>
+          <p class="step-intro" style="margin-bottom:10px;">Todos os personagens nomeados do seu reino — conforme a população cresce, novos moradores se juntam; se cai, alguns partem ou falecem.</p>
+          <input type="text" class="search-input" id="charSearch" placeholder="🔎 Pesquisar por nome ou profissão...">
+          <div class="tech-controls" style="margin-top:6px;"><label class="hint">Ordenar</label><select id="charSort"><option value="status">Padrão</option><option value="name">Nome</option><option value="loyalty">Lealdade</option><option value="reputation">Reputação</option><option value="mood">Humor</option><option value="age">Idade</option></select>
+            <select id="charKindFilter"><option value="">Todas as funções</option></select></div>
+          <div class="category-filter" id="charStatusFilter">
+            <button class="category-chip active" data-charstatus="ativo">Ativos</button>
+            <button class="category-chip" data-charstatus="all">Todos</button>
+            <button class="category-chip" data-charstatus="falecido">Falecidos</button>
+            <button class="category-chip" data-charstatus="emigrou">Emigrados</button>
+          </div>
+          <div id="charactersList" class="characters-grid"></div>
+        </div>
+      </section>
+
+      <!-- MODAL DE FICHA DO PERSONAGEM -->
+      <div class="modal-overlay hidden" id="endOverlay">
+        <div class="modal-panel parchment-panel" id="endPanel">
+          <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+          <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+          <div id="endBody"></div>
+        </div>
+      </div>
+
+      <div class="modal-overlay hidden" id="characterModalOverlay">
+        <div class="modal-panel parchment-panel" id="characterModalPanel">
+          <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+          <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+          <button class="modal-close" id="characterModalClose">✕</button>
+          <div id="characterModalBody"><p class="hint">Carregando ficha…</p></div>
+        </div>
+      </div>
+
+
+      <!-- MAPA COMPLETO -->
+      <section class="dash-panel" data-panel="mapa">
+        <div class="parchment-panel" id="mapPanelContainer">
+          <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+          <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+            <h3 style="margin-bottom:0;">🌍 Mapa do Mundo</h3>
+            <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+              <label class="hint" for="mapLayerSelect">Camada:</label>
+              <select id="mapLayerSelect">
+                <option value="normal">🗺️ Normal</option>
+                <option value="diplomacia">🕊️ Diplomacia (aliados, inimigos, embaixadas)</option>
+                <option value="sancoes">🚫 Sanções e Fronteiras</option>
+                <option value="magia">🔮 Locais Mágicos</option>
+                <option value="religiao">⛪ Religiões e Locais Sagrados</option>
+                <option value="infra">🛣️ Infraestrutura (estradas, portos, rotas)</option>
+                <option value="rotas">🛒 Rotas de comércio e 🕸️ conspirações</option>
+              </select>
+              <button class="btn btn-secondary btn-sm" id="mapFullscreenBtn">⛶ Tela Cheia</button>
+            </div>
+          </div>
+          <div class="map-legend" id="mapLayerLegend" style="display:none;"></div>
+          <div class="map-legend">
+            <span><i class="sw sw-floresta"></i> Floresta</span>
+            <span><i class="sw sw-montanha"></i> Montanha</span>
+            <span><i class="sw sw-planicie"></i> Planície</span>
+            <span><i class="sw sw-deserto"></i> Deserto</span>
+            <span><i class="sw sw-oceano"></i> Oceano</span>
+            <span><i class="sw sw-mine"></i> Seu território</span>
+            <span><i class="sw sw-ai"></i> Outros reinos</span>
+          </div>
+          <div class="map-scroll">
+            <div class="territory-grid" id="fullMapGrid"></div>
+          </div>
+          <div class="territory-info-box" id="territoryInfoBox">Clique em uma região do mapa para ver informações.</div>
+        </div>
+      </section>
+
+      <!-- POPULACAO -->
+      <section class="dash-panel" data-panel="populacao">
+        <div class="parchment-panel">
+          <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+          <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+          <h3>👥 Visão Geral da População</h3>
+          <div id="popSummary" class="pop-summary-grid"></div>
+          <div id="housingDetail" class="pop-housing-detail"></div>
+        </div>
+
+        <div class="parchment-panel">
+          <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+          <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+          <h3>🏛️ Classes Econômicas</h3>
+          <p class="step-intro" style="margin-bottom:14px;">Uma estimativa de como sua população se distribui entre classes sociais, com base em desemprego, impostos e felicidade.</p>
+          <div id="economicClasses" class="economic-classes"></div>
+        </div>
+
+        <div class="parchment-panel">
+          <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+          <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+          <h3>👷 Empregos e Trabalhadores <button type="button" class="info-btn" data-info="jobs">ⓘ</button></h3>
+          <p class="step-intro" style="margin-bottom:6px;">Distribua sua população entre as construções ativas. Quanto mais perto do ideal, maior a produção.</p>
+          <div class="pop-actions-row">
+            <button class="btn btn-primary" id="reallocateBtn">👷 Realocar Todos os Trabalhadores</button>
+            <span class="hint" id="vacanciesHint"></span>
+          </div>
+          <div id="byCategoryList" class="bc-stats" style="margin:10px 0;"></div>
+          <div class="category-filter" id="jobsFilter">
+            <button class="category-chip active" data-jobfilter="all">Todas</button>
+            <button class="category-chip" data-jobfilter="full">Completas</button>
+            <button class="category-chip" data-jobfilter="short">Faltando trabalhadores</button>
+            <button class="category-chip" data-jobfilter="empty">Sem trabalhadores</button>
+          </div>
+          <div id="jobsList" class="jobs-list"><p class="hint">Construa algo para começar a empregar seu povo.</p></div>
+        </div>
+      </section>
+
+      <!-- HISTORICO -->
+      <section class="dash-panel" data-panel="historico">
+        <div class="parchment-panel">
+          <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+          <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+          <h3>📜 Crônicas do Reino</h3>
+          <ul class="history-list" id="historyList"></ul>
+        </div>
+      </section>
+
+      <!-- CONFIGURACOES -->
+      <section class="dash-panel" data-panel="config">
+        <div class="parchment-panel config-panel">
+          <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+          <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+          <h3>⚙️ Configurações</h3>
+
+          <div id="configAlert" class="alert alert-success"></div>
+
+          <div class="field">
+            <label>Usuário conectado</label>
+            <input type="text" id="configUsername" disabled>
+          </div>
+          <div class="field">
+            <label for="configKingdomName">Nome do Reino</label>
+            <input type="text" id="configKingdomName">
+          </div>
+          <div class="field">
+            <label for="configRulerName">Nome do Governante</label>
+            <input type="text" id="configRulerName">
+          </div>
+
+          <button class="btn btn-primary" id="saveConfigBtn">Salvar alterações</button>
+
+          <hr class="divider">
+          <button class="btn btn-secondary btn-block" id="logoutBtn2">Sair da conta</button>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/mapview.js"></script>
+<script src="js/musica.js"></script>
+<script src="js/media.js"></script>
+<script src="js/painel-campanha.js"></script>
+<script src="js/painel-religiao-infra.js"></script>
+<script src="js/painel-guerra-cultura.js"></script>
+<script src="js/painel-tecnologia-comercio.js"></script>
+<script src="js/dados-ajuda.js"></script>
+<script src="js/kingdom.js"></script>
+<script src="js/world.js"></script>
+<script src="js/minigamesCore.js"></script>
+<script src="js/minigames.js"></script>
+<script src="js/mapart.js"></script>
+<script src="js/vivo.js"></script>
+<script src="js/cenarios.js"></script>
+<script src="js/icones.js"></script>
+<script src="js/pilares.js"></script>
+<script src="js/mapafast.js"></script>
+<script src="js/modos.js"></script>
+<script src="js/livro.js"></script>
+<script src="js/programas.js"></script>
+<script src="js/rivais.js"></script>
+<script src="js/resgate.js"></script>
+<script src="js/cidade-janela.js"></script>
+<script src="js/abas-mais.js"></script>
+<script src="js/ironman.js"></script>
+<script src="js/telemetria.js"></script>
+<script src="js/obras-extra.js"></script>
+<script src="js/ux.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/a11y.js"></script>
+<script src="js/account.js"></script>
+<script src="js/fx.js"></script>
+</body>
+</html>

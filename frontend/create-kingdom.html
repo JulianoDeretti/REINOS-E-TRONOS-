@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Fundar Reino — Kings or Thrones</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👑</text></svg>">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/create-kingdom.css">
+<link rel="stylesheet" href="css/medieval.css">
+</head>
+<body data-scene="castle">
+
+<div id="loading" class="loading-overlay">
+  <span class="spinner"></span>
+  <span>Preparando os pergaminhos da fundação…</span>
+</div>
+
+<div class="wizard-wrap hidden" id="wizardWrap">
+
+  <div class="wizard-header">
+    <div class="crest-eyebrow"><span class="rule"></span>FUNDAÇÃO DO REINO<span class="rule flip"></span></div>
+    <h1 class="brand-title wizard-title">Dê origem à sua civilização</h1>
+
+    <ol class="steps-track" id="stepsTrack">
+      <li data-step="1" class="active"><span class="dot">1</span><span class="label">Identidade</span></li>
+      <li data-step="2"><span class="dot">2</span><span class="label">Bandeira</span></li>
+      <li data-step="3"><span class="dot">3</span><span class="label">Governo</span></li>
+      <li data-step="4"><span class="dot">4</span><span class="label">Povo</span></li>
+      <li data-step="5"><span class="dot">5</span><span class="label">Território</span></li>
+      <li data-step="6"><span class="dot">6</span><span class="label">Fundação</span></li>
+    </ol>
+  </div>
+
+  <div id="alert" class="alert alert-error wizard-alert"></div>
+
+  <!-- STEP 1 — IDENTIDADE -->
+  <section class="parchment-panel wizard-panel" data-step-panel="1">
+    <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+    <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+
+    <h2>Quem você será nesta história?</h2>
+    <p class="step-intro">Todo reino precisa de um nome que ecoe através dos séculos.</p>
+
+    <div class="field">
+      <label for="kingdomName">Nome do Reino</label>
+      <input type="text" id="kingdomName" placeholder="Reino de Aethel" maxlength="40">
+    </div>
+    <div class="field">
+      <label for="rulerName">Nome do Governante</label>
+      <input type="text" id="rulerName" placeholder="Arthur" maxlength="30">
+    </div>
+    <div class="field">
+      <label for="capitalName">Nome da Capital</label>
+      <input type="text" id="capitalName" placeholder="Valoria" maxlength="30">
+    </div>
+    <div class="field">
+      <label for="dynasty">Nome da Dinastia <span class="hint-inline">(opcional)</span></label>
+      <input type="text" id="dynasty" placeholder="Casa Aurora" maxlength="40">
+    </div>
+    <div class="field">
+      <label for="motto">Lema <span class="hint-inline">(opcional)</span></label>
+      <input type="text" id="motto" placeholder="Luz e ferro" maxlength="60">
+    </div>
+    <div class="quick-start" id="quickStart">
+      <h3>Quer começar em 30 segundos?</h3>
+      <p class="step-intro">Escolha um reino pronto (ou sorteie um): tudo é preenchido e você só confirma a fundação. Dá para mudar o que quiser antes.</p>
+      <div class="id-grid">
+        <button type="button" class="id-card" data-preset="vale"><span class="id-ico">🌾</span><strong>Reino do Vale</strong><small>Terra fértil, fé simples e um povo hospitaleiro.</small></button>
+        <button type="button" class="id-card" data-preset="mar"><span class="id-ico">⚓</span><strong>Reino do Mar</strong><small>Porto, comércio e uma república de mercadores.</small></button>
+        <button type="button" class="id-card" data-preset="montanha"><span class="id-ico">⛰️</span><strong>Reino da Montanha</strong><small>Pedra, ferro e um clã de guerreiros.</small></button>
+        <button type="button" class="id-card" data-preset="sorteio"><span class="id-ico">🎲</span><strong>Reino aleatório</strong><small>Tudo sorteado: nomes, origem, governo e território.</small></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 2 — BANDEIRA / COR -->
+  <section class="parchment-panel wizard-panel" data-step-panel="2">
+    <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+    <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+
+    <h2>Forje sua bandeira</h2>
+    <p class="step-intro">A cor e o símbolo que tremularão sobre suas muralhas.</p>
+
+    <div class="banner-editor">
+      <div class="banner-preview-wrap">
+        <div class="banner-pole"></div>
+        <div class="banner-cloth" id="bannerCloth">
+          <span class="banner-symbol" id="bannerSymbolPreview">👑</span>
+        </div>
+      </div>
+
+      <div class="banner-controls">
+        <div class="field">
+          <label>Símbolo</label>
+          <div class="symbol-grid" id="symbolGrid"></div>
+        </div>
+
+        <div class="field">
+          <label>Padrão da bandeira</label>
+          <div class="pattern-grid" id="patternGrid">
+            <button type="button" class="pattern-opt active" data-pattern="solid">Sólido</button>
+            <button type="button" class="pattern-opt" data-pattern="stripes">Listras</button>
+            <button type="button" class="pattern-opt" data-pattern="cross">Cruz</button>
+            <button type="button" class="pattern-opt" data-pattern="diagonal">Diagonal</button>
+            <button type="button" class="pattern-opt" data-pattern="chevron">Chevron</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Divisão da bandeira <span class="hint-inline">(usa uma segunda cor)</span></label>
+      <div class="pattern-grid" id="divisionGrid">
+        <button type="button" class="pattern-opt active" data-division="inteira">Inteira</button>
+        <button type="button" class="pattern-opt" data-division="metade">Metade</button>
+        <button type="button" class="pattern-opt" data-division="faixa">Faixa</button>
+        <button type="button" class="pattern-opt" data-division="diagonal">Diagonal</button>
+        <button type="button" class="pattern-opt" data-division="quartelado">Quartelado</button>
+      </div>
+      <label for="bannerColor2" class="second-color-label">Segunda cor <input type="color" id="bannerColor2" value="#f2e3b3"></label>
+    </div>
+
+    <div class="field">
+      <label>Cor principal do reino <span class="hint-inline" id="colorHexLabel">#8B0000</span></label>
+      <div class="palette-named" id="paletteNamed"></div>
+      <div class="palette-grid" id="paletteGrid"></div>
+    </div>
+  </section>
+
+  <!-- STEP 3 — GOVERNO -->
+  <section class="parchment-panel wizard-panel wizard-panel-wide" data-step-panel="3">
+    <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+    <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+
+    <h2>Como seu povo será governado?</h2>
+    <p class="step-intro">A forma de governo molda o destino inicial da sua civilização — cada uma afeta estabilidade, economia, felicidade e crescimento de um jeito diferente.</p>
+
+    <div id="govCategories"></div>
+    <div style="margin:12px 0;text-align:center;"><button type="button" class="btn btn-secondary" id="govCompareBtn">📊 Comparar os 19 governos</button></div>
+    <div id="govDetail"></div>
+    <div id="govCompare" class="hidden"></div>
+  </section>
+
+  <!-- STEP 4 — TERRITÓRIO -->
+  <!-- STEP 4 — POVO: origem, governante, tradição e fé -->
+  <section class="parchment-panel wizard-panel wizard-panel-wide" data-step-panel="4">
+    <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+    <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+
+    <h2>De onde vem o seu povo?</h2>
+    <p class="step-intro">Tudo aqui é opcional, mas cada escolha muda o ponto de partida: cada bônus vem com um custo, e a origem abre uma pequena história logo nos primeiros dias.</p>
+    <div id="identityBody"><p>Carregando as opções…</p></div>
+  </section>
+
+  <section class="parchment-panel wizard-panel wizard-panel-wide" data-step-panel="5">
+    <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+    <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+
+    <h2>Escolha onde plantar sua bandeira</h2>
+    <p class="step-intro">Clique em uma região livre do mapa para fundar sua capital ali. Regiões de oceano e territórios já ocupados não podem ser escolhidos.</p>
+
+    <div class="map-legend" id="wizardMapLegend"></div>
+
+    <div class="territory-preview" id="territoryPreview" aria-live="polite"><p class="hint-inline">Passe o mouse sobre uma região para ver o que o terreno oferece; clique para escolher.</p></div>
+
+
+    <div class="map-scroll">
+      <div class="territory-grid" id="territoryGrid"></div>
+    </div>
+
+    <p class="territory-selected" id="territorySelectedInfo">Nenhum território selecionado ainda.</p>
+  </section>
+
+  <!-- STEP 5 — CONFIRMAÇÃO -->
+  <section class="parchment-panel wizard-panel" data-step-panel="6">
+    <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
+    <span class="panel-corner bl"></span><span class="panel-corner br"></span>
+
+    <h2>A fundação está prestes a começar</h2>
+    <p class="step-intro">Revise sua civilização antes de escrever a primeira página de sua história.</p>
+
+    <div class="summary-grid" id="summaryGrid"></div>
+
+    <div class="summary-grants">
+      <h3>Você receberá ao fundar:</h3>
+      <div class="grants-row">
+        <span>💰 5.000 Ouro</span>
+        <span>🌾 3.000 Comida</span>
+        <span>🌳 2.000 Madeira</span>
+        <span>🧱 1.500 Pedra</span>
+        <span>⛏️ 500 Ferro</span>
+        <span>💎 50 Cristais</span>
+        <span>👥 1.000 habitantes</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="wizard-nav">
+    <button type="button" class="btn btn-ghost" id="backBtn">← Voltar</button>
+    <button type="button" class="btn btn-primary" id="nextBtn">Avançar →</button>
+    <button type="button" class="btn btn-primary hidden" id="foundBtn">
+      <span id="foundLabel">👑 Fundar meu Reino</span>
+    </button>
+  </div>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/mapview.js"></script>
+<script src="js/create-kingdom.js"></script>
+<script src="js/fx.js"></script>
+</body>
+</html>

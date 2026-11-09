@@ -1,0 +1,34 @@
+/* Etapa 46 — cenários vivos nas abas, segredos no cenário e prêmios. Tudo respeita "reduzir movimento". */
+.cen { position: relative; height: 112px; margin: 0 0 12px; border-radius: 12px; overflow: hidden; border: 3px solid #9c7a1f; box-shadow: 0 4px 14px rgba(0,0,0,.4); background: #cde; } .cen svg { width: 100%; height: 100%; display: block; }
+.cen-hot { cursor: pointer; transform-box: fill-box; transform-origin: center bottom; } .cen-hot:hover { filter: brightness(1.15) drop-shadow(0 0 4px #ffe27a); } .cen-hit { animation: cenHit .45s ease-out; } @keyframes cenHit { 30% { transform: scale(1.25) rotate(-4deg); } 60% { transform: scale(.92) rotate(3deg); } }
+.cen-walk { animation: cenWalk linear infinite alternate; } @keyframes cenWalk { from { transform: translateX(0); } to { transform: translateX(var(--dx, 150px)); } }
+.cen-wave { transform-box: fill-box; transform-origin: left center; animation: cenWave 1.8s ease-in-out infinite; } @keyframes cenWave { 50% { transform: skewY(8deg) scaleX(.9); } }
+.cen-swing { transform-box: fill-box; transform-origin: 50% 0; animation: cenSwing 2.4s ease-in-out infinite alternate; } @keyframes cenSwing { from { transform: rotate(-16deg); } to { transform: rotate(16deg); } }
+.cen-crane { transform-box: fill-box; transform-origin: 0 50%; animation: cenCrane 7s ease-in-out infinite alternate; } @keyframes cenCrane { from { transform: rotate(-3deg); } to { transform: rotate(3deg); } }
+.cen-hammer { transform-box: fill-box; transform-origin: 50% 100%; animation: cenHammer .9s ease-in infinite alternate; } @keyframes cenHammer { from { transform: rotate(-35deg); } to { transform: rotate(18deg); } }
+.cen-puff { animation: panoSmoke 1.8s linear infinite; }
+.cen-coin { animation: cenCoin 2.8s ease-out infinite; } @keyframes cenCoin { 0% { transform: translateY(40px); opacity: 0; } 30% { opacity: 1; } 100% { transform: translateY(-34px); opacity: 0; } }
+.cen-note { animation: cenNote 3.4s ease-out infinite; } @keyframes cenNote { 0% { transform: translateY(20px); opacity: 0; } 25% { opacity: 1; } 100% { transform: translateY(-34px) translateX(14px); opacity: 0; } }
+.cen-bub { animation: cenBub 2.2s ease-in infinite; } @keyframes cenBub { 0% { transform: translateY(0); opacity: .9; } 100% { transform: translateY(-34px); opacity: 0; } }
+.cen-sail { animation: cenSail 22s linear infinite; } @keyframes cenSail { from { transform: translateX(-140px); } to { transform: translateX(1040px); } }
+.cen-wavy { animation: cenWavy 3s ease-in-out infinite; } @keyframes cenWavy { 50% { transform: translateX(14px); } }
+.cen-fly { animation: cenFly 9s linear infinite; } @keyframes cenFly { from { transform: translate(-30px, 20px); } to { transform: translate(1030px, 0); } }
+.cen-pulse { animation: cenPulse 1.6s ease-in-out infinite; transform-box: fill-box; transform-origin: center; } @keyframes cenPulse { 50% { transform: scale(1.12); opacity: .85; } }
+.cen-orbit { animation: cenOrbit 5s linear infinite; transform-origin: 0 0; } .cen-orbit.rev { animation-direction: reverse; } @keyframes cenOrbit { to { transform: rotate(360deg); } }
+.cen-orb { animation: cenOrb 2.6s ease-in-out infinite; } @keyframes cenOrb { 50% { opacity: .55; transform: scale(1.1); } }
+.cen-scope { animation: cenScope 6s ease-in-out infinite alternate; } @keyframes cenScope { from { transform: rotate(-12deg); } to { transform: rotate(8deg); } }
+.cen-sand { animation: cenSand 3s linear infinite; transform-box: fill-box; transform-origin: center top; } @keyframes cenSand { from { transform: scaleY(1); } to { transform: scaleY(.2); } }
+.cen-arc { offset-path: path('M-180 0 Q0 -120 180 0'); animation: cenArc 16s linear infinite; } @keyframes cenArc { from { offset-distance: 0%; } to { offset-distance: 100%; } }
+.cen-balloon { animation: cenBalloon 6s ease-in-out infinite alternate; } @keyframes cenBalloon { from { transform: translateY(8px); } to { transform: translateY(-14px); } }
+.cen-flame { animation: cenFlame .35s ease-in-out infinite alternate; transform-box: fill-box; transform-origin: center bottom; } @keyframes cenFlame { from { transform: scaleY(.85) skewX(-4deg); } to { transform: scaleY(1.15) skewX(4deg); } }
+.pano-cat.cen-hit { animation: cenHit .45s ease-out; } .pano-tail { transform-box: fill-box; transform-origin: 100% 100%; animation: cenSwing 2.2s ease-in-out infinite alternate; }
+/* reações e segredos */
+.cen-poof { position: fixed; z-index: 9600; transform: translate(-50%, -50%); font-size: 26px; pointer-events: none; animation: cenPoof .9s ease-out forwards; } @keyframes cenPoof { to { transform: translate(-50%, -90px) scale(1.5); opacity: 0; } }
+.cen-confetti { position: fixed; z-index: 9600; pointer-events: none; font-size: 18px; animation: cenConf 1.4s ease-out forwards; } @keyframes cenConf { to { transform: translate(var(--dx), var(--dy)) rotate(260deg); opacity: 0; } }
+.pano-fairy { position: absolute; z-index: 6; left: -50px; border: 0; background: none; font-size: 30px; cursor: pointer; filter: drop-shadow(0 0 8px #ffe27a); animation: cenFairy 6.5s ease-in-out forwards; } @keyframes cenFairy { 0% { left: -50px; transform: translateY(0); } 25% { transform: translateY(-24px); } 50% { transform: translateY(14px); } 75% { transform: translateY(-18px); } 100% { left: calc(100% + 40px); transform: translateY(0); } }
+.cen-big { position: fixed; z-index: 9600; font-size: 90px; pointer-events: none; filter: drop-shadow(0 4px 8px rgba(0,0,0,.5)); } .cen-big.rise { left: 45%; bottom: -20px; animation: cenRise 3.6s ease-out forwards; } .cen-big.fall { left: 40%; top: -100px; animation: cenFall 3.4s ease-in forwards; } .cen-big.fly { top: 18%; left: -140px; font-size: 120px; animation: cenDragon 4s linear forwards; }
+@keyframes cenRise { to { transform: translateY(-70vh) scale(1.6) rotate(12deg); opacity: 0; } } @keyframes cenFall { to { transform: translateY(70vh) rotate(160deg); } } @keyframes cenDragon { to { transform: translateX(calc(100vw + 280px)) translateY(40px); } }
+.vivo-prize { position: fixed; z-index: 9440; right: 18px; bottom: 18px; display: flex; align-items: center; gap: 12px; padding: 10px 16px; border-radius: 14px; border: 3px solid #ffe27a; background: #1f3a22; color: #e8ffe0; font: inherit; text-align: left; cursor: pointer; box-shadow: 0 8px 26px rgba(0,0,0,.55); animation: vuIn .5s cubic-bezier(.2,1.3,.4,1); max-width: min(420px, calc(100vw - 24px)); } .vivo-prize span { font-size: 32px; } .vivo-prize strong, .vivo-prize em { display: block; color: #e8ffe0; font-style: normal; } .vivo-prize em { font-size: 13px; color: #c8f0b8; }
+html.a11y-rm .cen *, html.a11y-rm .pano-fairy, html.a11y-rm .cen-big, html.a11y-rm .vivo-prize { animation: none !important; }
+@media (prefers-reduced-motion: reduce) { .cen *, .pano-fairy, .cen-big, .vivo-prize, .pano-tail { animation: none !important; } }
+@media (max-width: 700px) { .cen { height: 84px; } }

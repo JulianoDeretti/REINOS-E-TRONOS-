@@ -1,0 +1,36 @@
+/* Etapa 46 — o jogo se AJUSTA ao tamanho da tela. Cabeçalho em ordem fixa, painel de notificações preso à janela, rolagem horizontal da faixa de recursos. */
+.dash-topbar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; padding: 6px 12px; }
+.dash-topbar > * { order: 4; min-width: 0; }
+.dash-topbar > .dash-brand { order: 1; flex: 0 0 auto; font-size: clamp(15px, 1.5vw, 22px); white-space: nowrap; }
+.dash-topbar > .builders-chip { order: 2; flex: 0 0 auto; }
+.dash-topbar > .time-control { order: 3; flex: 1 1 auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px; }
+.dash-topbar > .notif-wrap { order: 5; margin-left: 0; }
+.dash-topbar > .dash-logout { order: 6; }
+.dash-topbar > .resource-strip-wrap { order: 10; flex: 1 1 100%; width: 100%; }  /* recursos: sempre na própria linha, com rolagem */
+.dash-topbar > button:not(.dash-logout):not(.info-btn) { flex: 0 0 auto; }
+.time-control .time-display { white-space: nowrap; }
+.time-control .btn-sm { padding: 5px 10px; font-size: 13px; white-space: nowrap; }
+#advance7Btn::after, #advance30Btn::after { content: ''; }
+/* o painel de notificações é preso à JANELA (nunca sai da tela) e acompanha a altura do cabeçalho */
+.notif-dropdown { position: fixed !important; left: auto !important; right: 8px !important; top: calc(var(--hdr-h, 64px) + 4px) !important; width: min(380px, calc(100vw - 16px)) !important; max-height: calc(100vh - var(--hdr-h, 64px) - 16px) !important; z-index: 9000; overflow: hidden; }
+.notif-dropdown .notif-list { overflow-y: auto; overscroll-behavior: contain; }
+.notif-dropdown .notif-filters, .notif-dropdown [class*="filter"] { display: flex; flex-wrap: wrap; gap: 4px; }
+/* telas médias: botões de tempo mais compactos */
+@media (max-width: 1500px) { .time-control .btn-sm { padding: 4px 8px; font-size: 12.5px; } .dash-topbar > .dash-brand { font-size: 17px; } #daysInput { width: 44px; } }
+@media (max-width: 1250px) { .dash-topbar > .time-control { flex-basis: 100%; order: 8; justify-content: flex-start; } .dash-topbar > .resource-strip-wrap { order: 10; } }
+@media (max-width: 900px) { .time-control .btn-sm { padding: 4px 7px; } .time-control .time-display { font-size: 12.5px; } .dash-topbar { padding: 4px 8px; } }
+/* abas ainda bloqueadas: aparecem apagadas, com cadeado e o dia de liberação (não somem) */
+.nav-item.vivo-locked, button.vivo-locked { display: flex !important; opacity: .5; cursor: not-allowed; position: relative; }
+.nav-item.vivo-locked::after { content: '🔒'; margin-left: auto; font-size: 12px; }
+.m-bottombar .vivo-locked { opacity: .45; }
+.nav-item.vivo-locked:hover { opacity: .75; }
+.vivo-unlockall { margin: 10px 8px 14px; width: calc(100% - 16px); }
+@media (max-width: 1750px) { .dash-logout { font-size: 0 !important; padding: 6px 10px !important; } .dash-logout::before { content: '⎋'; font-size: 17px; } }
+/* mais compacto entre 1250 e 1650 px: tudo da 1ª linha (marca, tempo, utilitários e sair) cabe sem quebrar */
+@media (min-width: 1251px) and (max-width: 1650px) { .dash-topbar > .dash-brand { font-size: 15px; } .dash-topbar > .dash-brand span { letter-spacing: 0; } .time-control .time-display { font-size: 12px; padding: 3px 9px; } .time-control .btn-sm { padding: 3px 7px; font-size: 12px; } .day-step-btn { width: 22px; height: 22px; } #daysInput { width: 34px; } .dash-topbar .info-btn { transform: scale(.85); } .dash-topbar { gap: 6px 7px; } }
+/* cartões de aviso (prêmio, abas liberadas, parada do "até algo") ficam ATRÁS das janelas e diálogos: nunca tampam um botão do minijogo/batalha */
+.vivo-prize, .vivo-unlock, .vivo-stop { z-index: 8800 !important; }
+/* meses do calendário: fundo pastel => texto ESCURO também no tema escuro (a regra geral dos cartões escuros usa !important) */
+html[data-theme="dark"] .pano-card .cal-m, html[data-theme="dark"] .cal-pop .cal-m { color: #1a1206 !important; }
+/* Etapa 57: "DIA 4" das crônicas (10 px) usava --gold-dim, contraste borderline sobre o pergaminho; só aparecia quando havia uma entrada de história, por isso o teste de legibilidade falhava às vezes */
+html:not([data-theme="dark"]) .ficha-history-list .fh-day { color: #6a4a10; } html[data-theme="dark"] .ficha-history-list .fh-day { color: #e8c874; }

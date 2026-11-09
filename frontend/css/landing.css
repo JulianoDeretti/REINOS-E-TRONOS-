@@ -1,0 +1,43 @@
+.landing-hero {
+  max-width: 680px;
+  text-align: center;
+}
+
+.landing-art {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  margin: 28px 0 26px;
+  perspective: 600px;
+}
+.landing-art .tile {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  border-radius: 4px;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.08), 0 4px 10px rgba(0,0,0,.4);
+  transform: rotateX(8deg);
+}
+.tile.forest  { background: linear-gradient(160deg, #4b6b41, #2c4327); }
+.tile.mountain{ background: linear-gradient(160deg, #7c7469, #4a453c); }
+.tile.plain, .tile.plain2 { background: linear-gradient(160deg, #b7a24f, #8a7530); }
+.tile.castle  { background: linear-gradient(160deg, var(--gold-bright), var(--gold-dim)); font-size: 26px; }
+.tile.ocean   { background: linear-gradient(160deg, #3c7690, #1d3f52); }
+.tile.desert  { background: linear-gradient(160deg, #cdb271, #a98a49); }
+
+.landing-copy {
+  color: var(--parchment-lo);
+  font-size: 18px;
+  line-height: 1.6;
+  max-width: 560px;
+  margin: 0 auto 30px;
+}
+
+.landing-actions { max-width: 420px; margin: 0 auto; }
+
+@media (max-width: 560px) {
+  .landing-art .tile { font-size: 16px; }
+  .landing-actions { flex-direction: column; }
+}

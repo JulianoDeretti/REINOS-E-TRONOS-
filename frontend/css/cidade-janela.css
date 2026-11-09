@@ -1,0 +1,15 @@
+/* Etapa 91: janela da cidade (vocação, lealdade, defesa, panorama) e vista da rede.
+   Funciona nos DOIS temas sem depender das variáveis de pergaminho (que não mudam no escuro): fundos translúcidos sobre o que já está atrás e texto herdado. */
+.cd-banner{margin:8px 0;padding:10px 12px;border:2px solid rgba(168,139,61,.85);border-radius:6px;background:rgba(128,128,128,.13);background:color-mix(in srgb,currentColor 9%,transparent);color:inherit}
+.cd-banner.bad{border-color:#c0392b} .cd-banner.warn{border-color:#d58a1c} .cd-banner h4{margin:0 0 4px;font-size:1.02em} .cd-banner p{margin:4px 0}
+.cd-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0}
+.cd-chip{display:inline-block;padding:2px 8px;border-radius:12px;border:1px solid rgba(168,139,61,.75);background:rgba(128,128,128,.13);background:color-mix(in srgb,currentColor 8%,transparent);color:inherit;font-size:.85em;white-space:nowrap}
+.cd-chip.ok{border-color:#3f9a5a} .cd-chip.warn{border-color:#d58a1c} .cd-chip.bad{border-color:#c0392b;font-weight:600}
+.cd-bar{height:10px;border-radius:5px;background:rgba(128,128,128,.35);overflow:hidden;min-width:140px;flex:1} .cd-bar>i{display:block;height:100%;background:#3f9a5a} .cd-bar.warn>i{background:#d58a1c} .cd-bar.bad>i{background:#c0392b}
+.cd-opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:8px;margin-top:8px}
+.cd-opt{display:flex;flex-direction:column;gap:4px;text-align:left;padding:8px;border:1px solid rgba(168,139,61,.8);border-radius:6px;background:rgba(128,128,128,.14);background:color-mix(in srgb,currentColor 9%,transparent);color:inherit;cursor:pointer;font:inherit}
+.cd-opt:hover:not(:disabled),.cd-opt:focus-visible{border-color:#e0b43c;background:rgba(224,180,60,.18)} .cd-opt:disabled{opacity:.55;cursor:not-allowed} .cd-opt strong{font-size:.95em} .cd-opt small{opacity:.9}
+.cd-pano{display:flex;gap:10px;align-items:stretch;margin:6px 0} .cd-pano svg{width:100%;height:auto;max-height:170px;border-radius:6px;border:1px solid rgba(168,139,61,.8)} .cd-shield{flex:0 0 74px} .cd-shield svg{width:74px;height:auto;max-height:none;border:0}
+.cd-table{width:100%;border-collapse:collapse;font-size:.88em} .cd-table td,.cd-table th{padding:3px 6px;border-bottom:1px solid rgba(128,128,128,.3);text-align:left}
+.cd-pos{color:#2e9e4d;color:color-mix(in srgb,#2e9e4d 72%,currentColor)} .cd-neg{color:#c0392b;color:color-mix(in srgb,#d9392b 70%,currentColor)}
+.cd-net{margin:8px 0} .cd-net svg{display:block;width:100%;max-width:640px;height:auto;margin:0 auto;border:1px solid rgba(168,139,61,.8);border-radius:6px;background:rgba(128,128,128,.1)} .cd-net text.cd-name{fill:currentColor} .cd-net ul{margin:6px 0 0 18px;padding:0;font-size:.9em}

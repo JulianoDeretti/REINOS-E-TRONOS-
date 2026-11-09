@@ -1,0 +1,876 @@
+.dashboard-body { background-attachment: fixed; }
+
+.dash { position: relative; z-index: 1; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+
+/* ---------------- topbar ---------------- */
+.dash-topbar {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 10px 20px;
+  background: linear-gradient(180deg, var(--wood), var(--wood-dark));
+  box-shadow: 0 3px 12px rgba(0,0,0,.4);
+  border-bottom: 2px solid var(--gold-dim);
+  position: sticky; top: 0; z-index: 20;
+}
+.dash-brand {
+  font-family: var(--font-display);
+  color: var(--gold-bright);
+  font-size: 18px;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.resource-strip {
+  display: flex;
+  gap: 14px;
+  flex: 1;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.resource-strip::-webkit-scrollbar { display: none; }
+.resource-chip {
+  display: flex; align-items: center; gap: 6px;
+  background: rgba(0,0,0,.25);
+  border: 1px solid rgba(201,162,39,.35);
+  padding: 6px 12px;
+  border-radius: 20px;
+  color: var(--parchment-hi);
+  font-size: 14.5px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.resource-chip .amt { font-weight: 600; color: var(--gold-bright); font-family: var(--font-display); font-size: 13px; }
+
+.dash-logout { flex-shrink: 0; color: var(--parchment-hi); background: rgba(0,0,0,.2); border-color: var(--gold-dim); }
+.dash-logout:hover:not(:disabled) { background: rgba(236,200,95,.18); border-color: var(--gold-bright); color: var(--gold-bright); }
+
+/* ---------------- layout ---------------- */
+.dash-body { display: flex; flex: 1; min-height: 0; }
+
+.dash-nav {
+  width: 190px;
+  flex-shrink: 0;
+  background: linear-gradient(180deg, var(--wood-dark), var(--wood-darkest));
+  display: flex;
+  flex-direction: column;
+  padding: 18px 10px;
+  gap: 4px;
+  border-right: 2px solid var(--gold-dim);
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold-dim) var(--wood-darkest);
+}
+.dash-nav::-webkit-scrollbar { width: 8px; }
+.dash-nav::-webkit-scrollbar-track { background: var(--wood-darkest); }
+.dash-nav::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 4px; }
+.dash-nav::-webkit-scrollbar-thumb:hover { background: var(--gold-bright); }
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  background: transparent;
+  border: none;
+  color: var(--parchment-lo);
+  font-family: var(--font-display);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  padding: 11px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: left;
+}
+.nav-item span { font-size: 17px; }
+.nav-item:hover { background: rgba(255,255,255,.05); }
+.nav-item.active {
+  background: linear-gradient(90deg, rgba(236,200,95,.22), transparent);
+  color: var(--gold-bright);
+  box-shadow: inset 3px 0 0 var(--gold-bright);
+}
+
+.dash-main {
+  flex: 1;
+  min-width: 0;
+  padding: 24px;
+  overflow-y: auto;
+}
+
+.dash-panel { display: none; max-width: 1000px; margin: 0 auto; }
+.dash-panel.active { display: block; animation: reveal .2s ease; }
+@keyframes reveal { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+.dash-panel h3 { font-size: 17px; margin-bottom: 14px; }
+
+/* ---------------- kingdom header card ---------------- */
+.kingdom-header-card {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.kh-cloth {
+  width: 88px; height: 116px;
+  border-radius: 2px 2px 8px 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 36px;
+  box-shadow: 0 8px 16px rgba(0,0,0,.4), inset 0 0 0 2px rgba(0,0,0,.25);
+  flex-shrink: 0;
+}
+.kh-info h1 { font-size: 26px; margin-bottom: 4px; }
+.kh-sub { color: var(--ink-soft); font-style: italic; margin-bottom: 10px; }
+.kh-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.kh-tag {
+  font-size: 13px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: rgba(90,58,34,.12);
+  border: 1px solid var(--wood-light);
+  color: var(--wood-dark);
+}
+
+/* ---------------- overview grid ---------------- */
+.overview-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 18px; }
+.overview-card { min-height: 0; }
+@media (max-width: 760px) { .overview-grid { grid-template-columns: 1fr; } }
+
+.kv-list { margin: 0; }
+.kv-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed rgba(90,58,34,.25); font-size: 15px; }
+.kv-row:last-child { border-bottom: none; }
+.kv-row .k { color: var(--ink-soft); }
+.kv-row .v { font-weight: 600; }
+
+/* ---------------- population bars ---------------- */
+.pop-row { margin-bottom: 12px; }
+.pop-row-head { display: flex; justify-content: space-between; font-size: 14.5px; margin-bottom: 4px; }
+.pop-row-head .label { display: flex; align-items: center; gap: 6px; }
+.pop-bar-track { height: 9px; border-radius: 5px; background: rgba(90,58,34,.15); overflow: hidden; }
+.pop-bar-fill { height: 100%; border-radius: 5px; background: linear-gradient(90deg, var(--gold-dim), var(--gold-bright)); }
+.pop-total { font-family: var(--font-display); font-size: 22px; color: var(--wood-dark); margin-bottom: 16px; }
+
+/* ---------------- mini/full map ---------------- */
+.mini-map-wrap { overflow-x: auto; }
+.territory-grid { display: grid; grid-auto-rows: 26px; gap: 2px; width: max-content; }
+.territory-grid.mini { grid-auto-rows: 16px; }
+.territory-cell {
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; border-radius: 2px; border: 1px solid rgba(0,0,0,.15);
+  cursor: pointer; transition: transform .1s ease;
+}
+.territory-grid.mini .territory-cell { font-size: 11px; cursor: default; }
+.territory-cell:hover { transform: scale(1.15); z-index: 2; box-shadow: 0 2px 8px rgba(0,0,0,.4); }
+.territory-cell.terrain-floresta { background: #4b6b41; }
+.territory-cell.terrain-montanha { background: #857e6f; }
+.territory-cell.terrain-planicie { background: #c3af5c; }
+.territory-cell.terrain-deserto { background: #d8bd7c; }
+.territory-cell.terrain-oceano { background: #396f8a; }
+.territory-cell.terrain-pantano { background: #5b6b4a; }
+.territory-cell.terrain-tundra { background: #a7b3ad; }
+.territory-cell.terrain-selva { background: #2f7d4f; }
+.territory-cell.terrain-costa { background: #4a9bb0; }
+.territory-cell.terrain-vale { background: #7fae4f; }
+.territory-cell.terrain-colina { background: #a68d52; }
+.territory-cell.terrain-vulcanica { background: #7a3020; }
+.territory-cell.terrain-congelada { background: #cfe6ef; }
+.territory-cell.terrain-magico { background: #8a5cc9; }
+.territory-cell.terrain-ruinas { background: #9a8a6a; }
+.territory-cell.terrain-antigas { background: #b09550; }
+.territory-cell.terrain-savana { background: #c9a94e; }
+.territory-cell.terrain-recife { background: #2fa3a0; }
+.territory-cell.owned-other { filter: saturate(.75) brightness(.9); }
+.territory-cell.owned-mine { filter: none; }
+.territory-cell { position: relative; }
+.territory-cell[data-own] { background-image: linear-gradient(var(--own-tint), var(--own-tint)); }
+
+.map-legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 13.5px; color: var(--ink-soft); margin-bottom: 14px; }
+.map-legend span { display: flex; align-items: center; gap: 6px; }
+.sw { width: 12px; height: 12px; border-radius: 2px; display: inline-block; }
+.sw-floresta { background: #3f5b3f; }
+.sw-montanha { background: #756f61; }
+.sw-planicie { background: #b7a24f; }
+.sw-deserto { background: #cdb271; }
+.sw-oceano { background: #2f5c73; }
+.sw-mine { background: var(--gold-bright); }
+
+.map-scroll {
+  overflow: auto;
+  max-height: 70vh;
+  border: 1px solid var(--wood-light);
+  border-radius: 4px;
+  background: rgba(0,0,0,.05);
+  padding: 8px;
+  margin-bottom: 14px;
+  scrollbar-width: auto;
+  scrollbar-color: var(--gold-dim) rgba(0,0,0,.15);
+}
+.map-scroll::-webkit-scrollbar { width: 12px; height: 12px; }
+.map-scroll::-webkit-scrollbar-track { background: rgba(0,0,0,.15); border-radius: 6px; }
+.map-scroll::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 6px; border: 2px solid transparent; background-clip: content-box; }
+.map-scroll::-webkit-scrollbar-thumb:hover { background: var(--gold-bright); background-clip: content-box; }
+.map-scroll::-webkit-scrollbar-corner { background: rgba(0,0,0,.15); }
+.territory-info-box {
+  padding: 12px 14px; border-radius: 4px;
+  background: rgba(90,58,34,.08); border: 1px solid var(--wood-light);
+  font-size: 15px; color: var(--ink);
+}
+.hint { color: var(--ink-soft); font-style: italic; font-size: 14px; margin-top: 10px; }
+
+/* ---------------- history ---------------- */
+.history-list { list-style: none; margin: 0; padding: 0; }
+.history-list li {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 12px 0; border-bottom: 1px dashed rgba(90,58,34,.25);
+}
+.history-list li:last-child { border-bottom: none; }
+.history-list .h-icon { font-size: 20px; }
+.history-list .h-year { font-family: var(--font-display); font-size: 11.5px; letter-spacing: 0.08em; color: #6b4f0e; display: block; }
+.history-list .h-title { font-size: 15.5px; }
+
+/* ---------------- config ---------------- */
+.config-panel { max-width: 480px; }
+.divider { border: none; border-top: 1px dashed rgba(90,58,34,.3); margin: 22px 0; }
+
+@media (max-width: 760px) {
+  .dash-body { flex-direction: column; }
+  .dash-nav { width: 100%; flex-direction: row; overflow-x: auto; padding: 8px; }
+  .nav-item { flex-shrink: 0; }
+  .nav-item span:not(:only-child) { display: none; }
+  .dash-topbar { flex-wrap: wrap; }
+}
+
+/* ================================================================
+   ETAPA 2 — Civilizacao: construcoes, populacao, economia, eventos,
+   objetivos, personagens, controle de tempo e notificacoes.
+   ================================================================ */
+
+/* ---------------- topbar: tempo + notificacoes ---------------- */
+.btn-sm { padding: 8px 14px; font-size: 12px; }
+
+.time-control {
+  display: flex; align-items: center; gap: 8px;
+  flex-shrink: 0;
+}
+.time-display {
+  display: flex; align-items: center; gap: 6px;
+  color: var(--parchment-hi);
+  font-family: var(--font-display);
+  font-size: 12.5px;
+  letter-spacing: 0.03em;
+  background: rgba(0,0,0,.25);
+  border: 1px solid rgba(201,162,39,.35);
+  padding: 8px 12px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.notif-wrap { position: relative; flex-shrink: 0; }
+.notif-bell {
+  position: relative;
+  background: rgba(0,0,0,.25);
+  border: 1px solid rgba(201,162,39,.35);
+  color: var(--parchment-hi);
+  font-size: 18px;
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.notif-badge {
+  position: absolute; top: -4px; right: -4px;
+  background: var(--crimson-bright);
+  color: #fff;
+  font-size: 10.5px;
+  font-family: var(--font-display);
+  min-width: 17px; height: 17px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  padding: 0 3px;
+  box-shadow: 0 0 0 2px var(--wood-dark);
+}
+.notif-dropdown {
+  position: absolute; right: 0; top: 46px;
+  width: 340px; max-height: 420px; overflow-y: auto;
+  background: var(--parchment-hi);
+  border: 2px solid var(--wood-dark);
+  border-radius: 6px;
+  box-shadow: 0 12px 30px rgba(0,0,0,.5);
+  z-index: 50;
+}
+.notif-dropdown-head {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 14px; border-bottom: 1px solid var(--wood-light);
+  font-size: 13px;
+}
+.btn-link { background: none; border: none; color: var(--crimson); cursor: pointer; font-size: 12px; text-decoration: underline; padding: 0; }
+.notif-list { padding: 6px 0; }
+.notif-item { display: flex; gap: 10px; padding: 8px 14px; font-size: 13.5px; border-bottom: 1px dashed rgba(90,58,34,.15); }
+.notif-item:last-child { border-bottom: none; }
+.notif-item.unread { background: rgba(236,200,95,.15); }
+.notif-item .n-icon { font-size: 16px; flex-shrink: 0; }
+.notif-item .n-day { display: block; font-size: 10.5px; color: var(--wood-light); font-family: var(--font-display); }
+
+.tick-toast {
+  position: fixed; top: 70px; left: 50%; transform: translateX(-50%);
+  background: var(--wood-dark); color: var(--gold-bright);
+  border: 1px solid var(--gold-dim);
+  padding: 10px 18px; border-radius: 20px;
+  font-family: var(--font-display); font-size: 13px;
+  box-shadow: 0 8px 20px rgba(0,0,0,.5);
+  z-index: 60;
+  animation: toastIn .25s ease;
+}
+@keyframes toastIn { from { opacity:0; transform: translate(-50%, -8px);} to { opacity:1; transform: translate(-50%,0);} }
+
+.nav-badge {
+  background: var(--crimson-bright); color: #fff;
+  font-size: 10px; font-family: var(--font-display);
+  border-radius: 8px; padding: 1px 6px; margin-left: auto;
+}
+
+/* ---------------- bem-estar (painel) ---------------- */
+.wellbeing-row { margin-bottom: 14px; }
+.wellbeing-row-head { display: flex; justify-content: space-between; font-size: 14.5px; margin-bottom: 4px; }
+.wellbeing-track { height: 10px; border-radius: 5px; background: rgba(90,58,34,.15); overflow: hidden; }
+.wellbeing-fill { height: 100%; border-radius: 5px; }
+.wellbeing-fill.happy { background: linear-gradient(90deg, #7a9e4a, #a8cc5a); }
+.wellbeing-fill.stable { background: linear-gradient(90deg, #3d6f8f, #5a9bc2); }
+.wellbeing-note { font-size: 13px; color: var(--ink-soft); margin-top: 10px; }
+
+/* ---------------- capital visual ---------------- */
+.capital-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(52px, 1fr));
+  gap: 6px; padding: 14px; background: rgba(63,91,63,.08);
+  border: 1px solid var(--wood-light); border-radius: 6px;
+  min-height: 70px;
+}
+.capital-tile {
+  aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+  font-size: 22px; background: rgba(255,252,240,.6);
+  border-radius: 4px; border: 1px solid var(--wood-light);
+  position: relative;
+}
+.capital-tile .lvl { position: absolute; bottom: 1px; right: 3px; font-size: 9px; font-family: var(--font-display); color: var(--wood-dark); }
+.capital-tile.pending { opacity: 0.55; }
+.capital-tile.pending::after { content: '⏳'; position: absolute; top: -4px; right: -4px; font-size: 12px; }
+
+/* ---------------- category filter chips ---------------- */
+.category-filter { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+.category-chip {
+  font-size: 12.5px; padding: 5px 12px; border-radius: 14px;
+  border: 1px solid var(--wood-light); background: rgba(255,252,240,.5);
+  cursor: pointer; color: var(--ink);
+}
+.category-chip.active { background: var(--gold-bright); border-color: var(--gold-dim); font-weight: 600; }
+
+/* ---------------- fila de construcao ---------------- */
+.queue-list { display: flex; flex-direction: column; gap: 10px; }
+.queue-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 12px; border-radius: 5px;
+  background: rgba(90,58,34,.06); border: 1px solid var(--wood-light);
+}
+.queue-item .q-icon { font-size: 24px; }
+.queue-item .q-info { flex: 1; }
+.queue-item .q-name { font-weight: 600; font-size: 14.5px; }
+.queue-item .q-track { height: 6px; border-radius: 3px; background: rgba(90,58,34,.15); overflow: hidden; margin-top: 5px; }
+.queue-item .q-fill { height: 100%; background: linear-gradient(90deg, var(--gold-dim), var(--gold-bright)); }
+.queue-item .q-days { font-size: 12.5px; color: var(--ink-soft); white-space: nowrap; }
+.queue-item .q-cancel { background: none; border: none; color: var(--crimson); cursor: pointer; font-size: 13px; text-decoration: underline; }
+
+/* ---------------- grid de construcoes (cards) ---------------- */
+.buildings-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
+.building-card {
+  border: 1px solid var(--wood-light); border-radius: 6px;
+  background: rgba(255,252,240,.5);
+  padding: 14px; display: flex; flex-direction: column; gap: 8px;
+}
+.building-card-head { display: flex; align-items: center; gap: 10px; }
+.building-card-head .bc-icon { font-size: 26px; }
+.building-card-head .bc-name { font-weight: 600; font-size: 15px; }
+.building-card-head .bc-level { margin-left: auto; font-size: 11.5px; font-family: var(--font-display); color: #6b4f0e; background: rgba(201,162,39,.15); padding: 2px 8px; border-radius: 10px; }
+.bc-desc { font-size: 13px; color: var(--ink-soft); line-height: 1.4; min-height: 34px; }
+.bc-stats { display: flex; flex-wrap: wrap; gap: 6px; font-size: 12.5px; }
+.bc-stat { background: rgba(90,58,34,.08); border-radius: 10px; padding: 2px 8px; }
+.bc-stat.prod { color: var(--forest); }
+.bc-stat.cons { color: var(--crimson); }
+.bc-cost { display: flex; flex-wrap: wrap; gap: 6px; font-size: 12.5px; color: var(--wood-dark); }
+.bc-workers { display: flex; align-items: center; gap: 8px; font-size: 13px; margin-top: 2px; }
+.bc-workers input[type="range"] { flex: 1; }
+.bc-actions { display: flex; gap: 8px; margin-top: 4px; }
+.bc-actions .btn { flex: 1; padding: 9px 10px; font-size: 12px; }
+.bc-upgrading { font-size: 12.5px; color: #6b4f0e; font-style: italic; }
+
+/* ---------------- economia ---------------- */
+.economy-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); gap: 14px; }
+.economy-stat { text-align: center; padding: 12px; background: rgba(90,58,34,.06); border-radius: 6px; border: 1px solid var(--wood-light); }
+.economy-stat .es-label { font-size: 11.5px; color: var(--ink-soft); font-family: var(--font-display); letter-spacing: 0.05em; }
+.economy-stat .es-value { font-size: 22px; font-weight: 600; margin-top: 4px; }
+.economy-stat.income .es-value { color: var(--forest); }
+.economy-stat.expense .es-value { color: var(--crimson); }
+
+.tax-control { display: flex; align-items: center; gap: 14px; }
+.tax-control input[type="range"] { flex: 1; }
+.tax-value { font-family: var(--font-display); font-size: 18px; color: var(--wood-dark); min-width: 44px; }
+
+.economy-log { display: flex; flex-direction: column; gap: 4px; max-height: 260px; overflow-y: auto; }
+.economy-log-row { display: grid; grid-template-columns: 60px 1fr 1fr 1fr; gap: 8px; font-size: 13px; padding: 6px 4px; border-bottom: 1px dashed rgba(90,58,34,.15); }
+.economy-log-row.head { font-family: var(--font-display); font-size: 11px; color: #6a4a22; }
+.economy-log-row .pos { color: var(--forest); }
+.economy-log-row .neg { color: var(--crimson); }
+
+/* ---------------- populacao (jobs) ---------------- */
+.pop-summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px,1fr)); gap: 14px; }
+.pop-stat { text-align: center; padding: 12px; background: rgba(90,58,34,.06); border-radius: 6px; border: 1px solid var(--wood-light); }
+.pop-stat .ps-label { font-size: 11.5px; color: var(--ink-soft); font-family: var(--font-display); }
+.pop-stat .ps-value { font-size: 22px; font-weight: 600; margin-top: 4px; }
+
+.jobs-list { display: flex; flex-direction: column; gap: 10px; }
+.job-row { display: flex; align-items: center; gap: 12px; padding: 10px; border: 1px solid var(--wood-light); border-radius: 6px; background: rgba(255,252,240,.4); }
+.job-row .j-icon { font-size: 22px; }
+.job-row .j-info { flex: 1; min-width: 0; }
+.job-row .j-name { font-weight: 600; font-size: 14px; }
+.job-row .j-profession { font-size: 12px; color: var(--ink-soft); }
+.job-row .j-controls { display: flex; align-items: center; gap: 8px; }
+.job-row input[type="range"] { width: 110px; }
+.job-row .j-count { font-family: var(--font-display); font-size: 13px; min-width: 50px; text-align: right; }
+.job-row .j-eff { font-size: 11.5px; padding: 2px 8px; border-radius: 10px; background: rgba(63,91,63,.15); color: var(--forest); }
+.job-row .j-eff.low { background: rgba(122,31,43,.15); color: var(--crimson); }
+
+/* ---------------- eventos ---------------- */
+.event-card {
+  border: 1px solid var(--gold-dim); border-radius: 6px;
+  background: linear-gradient(180deg, rgba(236,200,95,.12), transparent);
+  padding: 16px; margin-bottom: 14px;
+}
+.event-card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.event-card-head .ev-icon { font-size: 28px; }
+.event-card-head .ev-title { font-family: var(--font-display); font-size: 16px; }
+.event-text { font-size: 14.5px; color: var(--ink-soft); margin-bottom: 12px; }
+.event-options { display: flex; flex-wrap: wrap; gap: 8px; }
+.event-options .btn { flex: 1; min-width: 160px; }
+
+.resolved-event { display: flex; gap: 10px; padding: 10px 0; border-bottom: 1px dashed rgba(90,58,34,.2); font-size: 14px; }
+.resolved-event .re-icon { font-size: 18px; }
+.resolved-event .re-day { font-family: var(--font-display); font-size: 10.5px; color: #6a4a22; display: block; }
+
+/* ---------------- objetivos ---------------- */
+.objectives-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap: 14px; }
+.objective-card {
+  border: 1px solid var(--wood-light); border-radius: 6px;
+  background: rgba(255,252,240,.5); padding: 14px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.objective-card.completed { border-color: var(--forest); background: rgba(63,91,63,.1); }
+.objective-card.claimed { opacity: 0.6; }
+.objective-head { display: flex; align-items: center; gap: 10px; }
+.objective-head .obj-icon { font-size: 24px; }
+.objective-head .obj-title { font-weight: 600; font-size: 14.5px; }
+.objective-desc { font-size: 13px; color: var(--ink-soft); }
+.objective-track { height: 8px; border-radius: 4px; background: rgba(90,58,34,.15); overflow: hidden; }
+.objective-fill { height: 100%; background: linear-gradient(90deg, var(--gold-dim), var(--gold-bright)); }
+.objective-progress { font-size: 12px; color: var(--ink-soft); display: flex; justify-content: space-between; }
+.objective-reward { font-size: 12.5px; color: var(--forest); }
+
+/* ---------------- personagens ---------------- */
+.characters-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 14px; }
+.character-card {
+  border: 1px solid var(--wood-light); border-radius: 6px;
+  background: rgba(255,252,240,.5); padding: 16px;
+  display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px;
+}
+.character-card .ch-icon { font-size: 36px; }
+.character-card .ch-name { font-family: var(--font-display); font-size: 15px; }
+.character-card .ch-role { font-size: 13px; color: var(--ink-soft); font-style: italic; }
+.character-card .ch-stats { display: flex; gap: 14px; margin-top: 6px; font-size: 12px; }
+
+@media (max-width: 760px) {
+  .time-display { display: none; }
+  .notif-dropdown { width: 280px; right: -60px; }
+  .job-row { flex-wrap: wrap; }
+}
+
+/* ================================================================
+   ETAPA 3 — Modal de personagens, tracos de governo, acoes territoriais
+   ================================================================ */
+
+.kh-traits { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.kh-trait { font-size: 11.5px; padding: 3px 9px; border-radius: 10px; background: rgba(63,91,63,.12); color: var(--forest); border: 1px solid rgba(63,91,63,.3); }
+
+.obj-count { font-size: 12px; color: #6a4a22; font-family: var(--font-body); font-weight: normal; }
+
+.territory-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.territory-actions .btn { padding: 8px 14px; font-size: 12.5px; }
+.territory-actions .btn:disabled { opacity: .45; cursor: not-allowed; }
+
+/* --- personagens clicaveis --- */
+.character-card { cursor: pointer; transition: transform .12s ease, box-shadow .12s ease; }
+.character-card:hover { transform: translateY(-3px); box-shadow: 0 8px 18px rgba(0,0,0,.25); }
+
+/* --- modal --- */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 80;
+  background: rgba(10, 6, 2, 0.75);
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+}
+.modal-panel {
+  max-width: 560px; width: 100%;
+  max-height: 85vh; overflow-y: auto;
+  position: relative;
+  animation: modalIn .2s ease;
+}
+@keyframes modalIn { from { opacity: 0; transform: translateY(12px) scale(.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+.modal-close {
+  position: absolute; top: 10px; right: 10px;
+  width: 30px; height: 30px; border-radius: 50%;
+  background: var(--wood-dark); color: var(--parchment-hi);
+  border: 1px solid var(--gold-dim);
+  cursor: pointer; font-size: 14px; z-index: 2;
+}
+.modal-close:hover { background: var(--crimson); }
+
+.ficha-head { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; padding-right: 30px; }
+.ficha-icon { font-size: 44px; }
+.ficha-name { font-family: var(--font-display); font-size: 20px; margin-bottom: 2px; }
+.ficha-role { color: var(--ink-soft); font-style: italic; }
+.ficha-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.ficha-meta span { font-size: 12px; background: rgba(90,58,34,.1); border-radius: 10px; padding: 3px 10px; }
+
+.ficha-bio { font-size: 15px; line-height: 1.6; color: var(--ink); background: rgba(90,58,34,.05); border-left: 3px solid var(--gold-dim); padding: 12px 14px; border-radius: 0 4px 4px 0; margin-bottom: 18px; font-style: italic; }
+
+.ficha-section-title { font-family: var(--font-display); font-size: 13px; letter-spacing: 0.06em; color: var(--wood-dark); margin: 16px 0 10px; border-bottom: 1px dashed var(--wood-light); padding-bottom: 4px; }
+
+.ficha-attrs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px; }
+.ficha-attr-row { display: flex; flex-direction: column; gap: 3px; }
+.ficha-attr-head { display: flex; justify-content: space-between; font-size: 12.5px; }
+.ficha-attr-track { height: 6px; border-radius: 3px; background: rgba(90,58,34,.15); overflow: hidden; }
+.ficha-attr-fill { height: 100%; background: linear-gradient(90deg, var(--gold-dim), var(--gold-bright)); }
+
+.ficha-history-list { list-style: none; margin: 0; padding: 0; }
+.ficha-history-list li { display: flex; gap: 10px; padding: 8px 0; border-bottom: 1px dashed rgba(90,58,34,.2); font-size: 13.5px; }
+.ficha-history-list .fh-day { font-family: var(--font-display); font-size: 10px; color: var(--gold-dim); display: block; }
+
+@media (max-width: 560px) {
+  .ficha-attrs { grid-template-columns: 1fr; }
+  .modal-panel { padding: 20px 16px; }
+}
+
+/* ================================================================
+   ETAPA 4 — Exercito, cidades, construtores, busca, stepper de dias
+   ================================================================ */
+
+.builders-chip {
+  display: flex; align-items: center; gap: 4px;
+  background: rgba(0,0,0,.25);
+  border: 1px solid rgba(201,162,39,.35);
+  color: var(--parchment-hi);
+  font-family: var(--font-display);
+  font-size: 12.5px;
+  padding: 7px 12px;
+  border-radius: 16px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.day-stepper {
+  display: flex; align-items: center; gap: 4px;
+  background: rgba(0,0,0,.2);
+  border: 1px solid rgba(201,162,39,.3);
+  border-radius: 16px;
+  padding: 2px;
+}
+.day-step-btn {
+  width: 26px; height: 26px; border-radius: 50%;
+  border: none; background: var(--bronze);
+  color: #2e1c08; font-family: var(--font-display); font-weight: 700;
+  cursor: pointer; font-size: 15px; line-height: 1;
+}
+.day-step-btn:hover { filter: brightness(1.1); }
+.day-step-btn:active { transform: scale(0.94); }
+#daysInput {
+  width: 40px; text-align: center; background: transparent; border: none;
+  color: var(--gold-bright); font-family: var(--font-display); font-size: 14px;
+  -moz-appearance: textfield;
+}
+#daysInput::-webkit-outer-spin-button, #daysInput::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+.search-input {
+  width: 100%;
+  padding: 9px 13px;
+  margin-bottom: 12px;
+  background: rgba(255, 252, 240, 0.6);
+  border: 1px solid var(--wood-light);
+  border-radius: 4px;
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 14.5px;
+  outline: none;
+}
+.search-input:focus { border-color: var(--gold-dim); box-shadow: 0 0 0 3px rgba(201,162,39,.2); }
+
+/* --- assentamentos --- */
+.settlement-card { position: relative; }
+.settlement-card .ch-capital-badge {
+  position: absolute; top: 8px; right: 8px;
+  font-size: 10px; background: var(--gold-bright); color: #2e1c08;
+  padding: 2px 8px; border-radius: 8px; font-family: var(--font-display);
+}
+
+@media (max-width: 900px) {
+  .builders-chip { display: none; }
+}
+@media (max-width: 760px) {
+  .day-stepper { display: none; }
+}
+
+/* ================================================================
+   ETAPA 5 — Mercado, classes economicas, resource-strip arrastavel
+   ================================================================ */
+
+.resource-strip {
+  cursor: grab;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+.resource-strip:active { cursor: grabbing; }
+.resource-chip { cursor: pointer; transition: transform .1s ease, background .1s ease; }
+.resource-chip:hover { background: rgba(236,200,95,.2); transform: translateY(-1px); }
+
+/* --- mercado --- */
+.market-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px,1fr)); gap: 12px; }
+.market-card {
+  border: 1px solid var(--wood-light); border-radius: 6px;
+  background: rgba(255,252,240,.5); padding: 12px 14px;
+}
+.market-card-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.market-card-head .mc-name { font-weight: 600; font-size: 14.5px; }
+.market-card-head .mc-trend { font-size: 11px; padding: 2px 7px; border-radius: 8px; }
+.mc-trend.alta { background: rgba(122,31,43,.15); color: var(--crimson); }
+.mc-trend.baixa { background: rgba(63,91,63,.15); color: var(--forest); }
+.mc-trend.estavel { background: rgba(90,58,34,.1); color: var(--ink-soft); }
+.market-card .mc-stock { font-size: 12.5px; color: var(--ink-soft); margin-bottom: 8px; }
+.market-card .mc-prices { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 10px; }
+.market-card .mc-prices .buy { color: var(--crimson); }
+.market-card .mc-prices .sell { color: var(--forest); }
+.market-card .mc-actions { display: flex; gap: 6px; align-items: center; }
+.market-card .mc-actions input { width: 55px; padding: 5px; border-radius: 4px; border: 1px solid var(--wood-light); text-align: center; }
+.market-card .mc-actions button { flex: 1; padding: 7px 8px; font-size: 11.5px; }
+
+/* --- classes economicas --- */
+.economic-classes { display: flex; flex-direction: column; gap: 8px; }
+.eco-class-row { display: flex; align-items: center; gap: 10px; }
+.eco-class-row .ec-icon { font-size: 18px; width: 22px; text-align: center; }
+.eco-class-row .ec-label { font-size: 13px; width: 140px; flex-shrink: 0; }
+.eco-class-row .ec-track { flex: 1; height: 10px; border-radius: 5px; background: rgba(90,58,34,.12); overflow: hidden; }
+.eco-class-row .ec-fill { height: 100%; background: linear-gradient(90deg, var(--bronze), var(--gold-bright)); }
+.eco-class-row .ec-value { font-size: 12px; width: 90px; text-align: right; color: var(--ink-soft); flex-shrink: 0; }
+
+/* --- riqueza no card de assentamento --- */
+.settlement-wealth { font-size: 12px; color: #6b4f0e; font-weight: 600; }
+
+@media (max-width: 560px) {
+  .eco-class-row .ec-label { width: 100px; font-size: 12px; }
+  .eco-class-row .ec-value { width: 70px; }
+}
+
+/* ================================================================
+   ETAPA 6 — Reinos de IA no mapa, tela cheia, barra de recursos
+   ================================================================ */
+
+.territory-cell.owned-ai { position: relative; }
+.territory-cell.owned-ai::after {
+  content: '';
+  position: absolute; top: 1px; right: 1px;
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--ai-color, #7a2020);
+  box-shadow: 0 0 0 1px rgba(0,0,0,.4);
+}
+.sw-ai { background: repeating-linear-gradient(45deg, #7a2020, #7a2020 3px, #20507a 3px, #20507a 6px); }
+
+/* --- mapa em tela cheia --- */
+.map-fullscreen {
+  position: fixed !important;
+  inset: 12px !important;
+  z-index: 100 !important;
+  overflow-y: auto;
+  max-width: none !important;
+  box-shadow: 0 0 0 9999px rgba(0,0,0,.85);
+}
+.map-fullscreen .map-scroll { max-height: calc(100vh - 260px); }
+
+/* --- barra de recursos redesenhada: mais alta, com scrollbar visivel e
+       setas de navegacao, igual ao pedido de ter algo "pra poder mexer" --- */
+.dash-topbar { flex-wrap: wrap; row-gap: 8px; }
+.resource-strip-wrap {
+  display: flex; align-items: center; gap: 6px;
+  flex: 1 1 100%;
+  order: 10;
+  background: rgba(0,0,0,.18);
+  border-radius: 8px;
+  padding: 4px 6px;
+}
+.resource-strip {
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold-dim) transparent;
+  padding-bottom: 4px;
+}
+.resource-strip::-webkit-scrollbar { height: 8px; }
+.resource-strip::-webkit-scrollbar-track { background: rgba(0,0,0,.2); border-radius: 4px; }
+.resource-strip::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 4px; }
+.resource-strip::-webkit-scrollbar-thumb:hover { background: var(--gold-bright); }
+
+.res-scroll-btn {
+  flex-shrink: 0;
+  width: 26px; height: 26px; border-radius: 50%;
+  background: var(--bronze); color: #2e1c08;
+  border: none; cursor: pointer; font-weight: 700; font-size: 13px;
+}
+.res-scroll-btn:hover { filter: brightness(1.1); }
+
+@media (max-width: 900px) {
+  .resource-strip-wrap { order: 5; }
+}
+
+.character-card { position: relative; }
+.character-inactive { opacity: 0.55; filter: grayscale(0.6); }
+.ch-status-badge {
+  position: absolute; top: 6px; right: 6px;
+  font-size: 10px; background: rgba(122,31,43,.85); color: #fff;
+  padding: 2px 7px; border-radius: 8px;
+}
+
+/* ================================================================
+   ETAPA 7 — Gerenciamento de cidades, adequacao de terreno
+   ================================================================ */
+
+.settlement-clickable { cursor: pointer; transition: transform .12s ease, box-shadow .12s ease; }
+.settlement-clickable:hover { transform: translateY(-3px); box-shadow: 0 8px 18px rgba(0,0,0,.25); }
+.settlement-suitability { font-size: 11px; padding: 2px 8px; border-radius: 8px; margin-top: 4px; background: rgba(90,58,34,.1); }
+.settlement-suitability.good { background: rgba(63,91,63,.18); color: var(--forest); }
+.settlement-suitability.bad { background: rgba(122,31,43,.15); color: var(--crimson); }
+
+/* Aba Mapa ocupa a pagina inteira */
+.dash-panel[data-panel="mapa"] { max-width: none; }
+.dash-panel[data-panel="mapa"] .map-scroll { max-height: calc(100vh - 330px); min-height: 420px; }
+.map-fullscreen .map-scroll { max-height: calc(100vh - 230px) !important; }
+
+.info-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 18px; height: 18px; border-radius: 50%;
+  border: 1px solid var(--gold-dim); background: linear-gradient(180deg, var(--gold-bright), var(--gold));
+  color: #2a1806; font-size: 12px; line-height: 1; cursor: pointer; padding: 0; margin-left: 4px;
+  font-family: var(--font-body); vertical-align: middle;
+}
+.info-btn:hover { filter: brightness(1.12); transform: scale(1.1); }
+.dash-topbar .info-btn { flex-shrink: 0; }
+.transfer-form { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 8px; }
+.transfer-form select, .transfer-form input { padding: 7px 9px; border-radius: 4px; border: 1px solid var(--wood-light); background: rgba(255,252,240,.7); }
+.transfer-form input { width: 90px; }
+
+/* ---------- Política (Etapa 9) ---------- */
+.pol-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 10px; margin: 10px 0; }
+.pol-meter { border: 1px solid var(--wood-light); border-radius: 6px; padding: 8px 12px; background: rgba(255,252,240,.5); }
+.pm-head, .pg-head, .pl-head, .pd-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 4px; }
+.pol-track { height: 10px; border-radius: 5px; background: rgba(90,58,34,.15); overflow: hidden; flex: 1; }
+.pol-fill { height: 100%; border-radius: 5px; transition: width .4s ease; }
+.pol-fill.good { background: linear-gradient(90deg, #4c8a4c, #7bc47b); }
+.pol-fill.mid { background: linear-gradient(90deg, #c9a227, #ecc85f); }
+.pol-fill.bad { background: linear-gradient(90deg, #a03040, #d0606a); }
+.pol-fill.power { background: linear-gradient(90deg, var(--bronze), var(--gold-bright)); }
+.pol-power { display: flex; align-items: center; gap: 10px; margin: 5px 0; }
+.pp-label { width: 190px; font-size: 13px; flex-shrink: 0; }
+.pp-val { width: 42px; text-align: right; font-size: 13px; }
+.pol-groups { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 10px; }
+.pol-group, .pol-law, .pol-demand { border: 1px solid var(--wood-light); border-radius: 6px; padding: 10px 12px; background: rgba(255,252,240,.55); margin-bottom: 10px; }
+.pol-demand.protest { border-color: var(--crimson); background: rgba(160,48,64,.08); }
+.pd-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.pd-actions .btn { padding: 8px 12px; font-size: 12px; }
+.pol-laws { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 10px; }
+.pl-opt { border-top: 1px dashed var(--wood-light); padding: 8px 0; display: flex; flex-direction: column; gap: 4px; align-items: flex-start; }
+.pl-opt.current { background: rgba(236,200,95,.18); border-radius: 4px; padding: 8px; }
+.pl-opt .btn { padding: 6px 12px; font-size: 12px; }
+.pol-group-chip { background: rgba(107,63,138,.14); }
+.pol-vote { padding: 8px 12px; border-radius: 6px; margin: 8px 0; border: 1px solid var(--wood-light); }
+.pol-vote.ok { background: rgba(63,91,63,.15); } .pol-vote.fail { background: rgba(160,48,64,.12); }
+@media (max-width: 560px) { .pp-label { width: 120px; font-size: 12px; } }
+
+/* ---------- Tecnologia (Etapa 10) ---------- */
+.tech-controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 8px 0; }
+.tech-controls select { padding: 7px 9px; border-radius: 4px; border: 1px solid var(--wood-light); background: rgba(255,252,240,.7); max-width: 260px; }
+.tech-row { margin: 12px 0; }
+.tech-row-title { margin-bottom: 6px; font-size: 15px; }
+.tech-scroll { display: flex; align-items: stretch; gap: 6px; overflow-x: auto; padding: 4px 2px 10px; cursor: grab; scrollbar-width: thin; scrollbar-color: var(--gold-dim) rgba(0,0,0,.1); }
+.tech-scroll:active { cursor: grabbing; }
+.tech-arrow { align-self: center; color: var(--gold-dim); font-size: 18px; flex-shrink: 0; }
+.tech-node { flex: 0 0 240px; border: 1px solid var(--wood-light); border-radius: 6px; padding: 10px 12px; background: rgba(255,252,240,.6); display: flex; flex-direction: column; gap: 6px; }
+.tech-node.done { background: rgba(63,91,63,.16); border-color: var(--forest); }
+.tech-node.active { background: rgba(236,200,95,.25); border-color: var(--gold-dim); }
+.tech-node.available { border-color: var(--bronze); box-shadow: 0 0 0 1px rgba(201,162,39,.35); }
+.tech-node.locked { opacity: .6; }
+.tn-head { display: flex; gap: 8px; align-items: flex-start; }
+.tn-icon { font-size: 22px; } .tn-badge { margin-left: auto; }
+.req-ok { color: var(--forest); } .req-no { color: var(--crimson); }
+.tech-node .btn { padding: 7px 10px; font-size: 12px; }
+
+/* ---------- Etapa 11: nevoa de guerra, exploracao ---------- */
+.territory-cell.fog { background: #2a2a28 !important; color: #555; opacity: .85; }
+.territory-cell.fog:hover { opacity: 1; }
+.tech-node.locked.risky { border-style: dashed; }
+.exp-log { max-height: 340px; overflow-y: auto; border: 1px solid var(--wood-light); border-radius: 6px; padding: 8px 12px; background: rgba(0,0,0,.03); margin: 8px 0; }
+.exp-log-line { padding: 4px 0; border-bottom: 1px dashed rgba(90,58,34,.15); font-size: 13.5px; }
+.exp-log-line:last-child { border-bottom: none; }
+.exp-log-line .el-day { font-family: var(--font-display); font-size: 10.5px; color: var(--gold-dim); margin-right: 6px; }
+.exp-card { border: 1px solid var(--wood-light); border-radius: 6px; padding: 12px; margin-bottom: 12px; background: rgba(255,252,240,.55); }
+.exp-card.perdida { border-color: var(--crimson); background: rgba(160,48,64,.08); }
+.exp-card.concluida { border-color: var(--forest); }
+.exp-decision { border: 2px solid var(--gold-dim); border-radius: 6px; padding: 10px 12px; margin-top: 8px; background: rgba(236,200,95,.15); }
+.exp-decision .btn { margin: 3px 4px 3px 0; padding: 7px 11px; font-size: 12px; }
+.bestiary-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px; }
+.beast-card { border: 1px solid var(--wood-light); border-radius: 6px; padding: 10px; text-align: center; background: rgba(255,252,240,.5); }
+.beast-card.unknown { opacity: .5; }
+.beast-card .bc-icon-big { font-size: 34px; display: block; margin-bottom: 4px; }
+.fog-bar { height: 12px; border-radius: 6px; background: repeating-linear-gradient(90deg, #444 0 8px, #333 8px 16px); overflow: hidden; display: flex; }
+.fog-bar span { height: 100%; }
+
+/* ---------- Etapa 14: administracao em massa ---------- */
+.qty-stepper { display: flex; align-items: center; gap: 6px; margin: 8px 0 4px; flex-wrap: wrap; }
+.qty-btn { width: 30px; height: 30px; border-radius: 6px; border: 1px solid var(--wood-light); background: rgba(255,252,240,.7); font-size: 16px; cursor: pointer; }
+.qty-input { width: 56px; text-align: center; padding: 6px 4px; border-radius: 6px; border: 1px solid var(--wood-light); background: rgba(255,252,240,.7); font-size: 14px; }
+.qty-max { padding: 6px 10px; font-size: 11.5px; }
+.pop-actions-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 8px 0; }
+.pop-housing-detail { margin-top: 10px; }
+.pop-alert { color: var(--crimson); font-weight: 600; }
+.ps-sub { font-size: 11px; color: var(--ink-soft); margin-top: 2px; }
+.j-count.j-short { color: var(--crimson); font-weight: 600; }
+.queue-waiting { opacity: .75; border-style: dashed; }
+
+/* ---------- Etapa 17: combate visual, cercos ---------- */
+.battle-visual { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 10px 0; padding: 14px 10px; border-radius: 8px; border: 2px solid var(--wood-light); background: rgba(0,0,0,.03); overflow: hidden; }
+.battle-visual.battle-win { border-color: var(--forest); }
+.battle-visual.battle-loss { border-color: var(--crimson); }
+.battle-visual.battle-draw { border-color: var(--gold-dim); }
+.bv-side { display: flex; flex-wrap: wrap; gap: 4px; max-width: 40%; }
+.bv-unit { font-size: 22px; display: inline-block; animation: bv-march 1.4s ease-in-out infinite; }
+.bv-attacker .bv-unit { animation-name: bv-march-right; }
+.bv-defender .bv-unit { animation-name: bv-march-left; }
+.bv-clash { font-size: 30px; animation: bv-pulse 1s ease-in-out infinite; }
+@keyframes bv-march-right { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(4px); } }
+@keyframes bv-march-left { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(-4px); } }
+@keyframes bv-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.25); } }
+
+/* ---------- Etapa 20: paineis recolhiveis ---------- */
+.panel-collapse-btn {
+  background: none; border: none; cursor: pointer; color: var(--gold-dim);
+  font-size: 13px; margin-right: 8px; padding: 2px 4px; flex-shrink: 0;
+}
+.panel-collapse-btn:hover { color: var(--gold-bright); }
+.parchment-panel.panel-collapsed > *:not(h3):not(.panel-corner) { display: none !important; }
+.parchment-panel.panel-collapsed { padding-bottom: 14px; }
+.parchment-panel > h3 { display: flex; align-items: center; }
+
+/* ---------- Etapa 20: notificacoes clicaveis ---------- */
+.notif-item.notif-clickable { cursor: pointer; }
+.notif-item.notif-clickable:hover { background: rgba(236,200,95,.12); }
+
+/* ---------- Etapa 28: rios ---------- */
+.territory-cell.river { position: relative; }
+.territory-cell.river::before { content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(135deg, transparent 38%, rgba(70,145,235,.85) 38%, rgba(70,145,235,.85) 62%, transparent 62%); }
